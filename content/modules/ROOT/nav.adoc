@@ -1,7 +1,19 @@
-* xref:module-01.adoc[1. RPM Native Container]
-** xref:module-01.adoc#repositories[Repositories]
-** xref:module-01.adoc#software[Software]
+* 1. Workshop Overview
+** xref:index.adoc[Intro]
+** xref:inner-outer.adoc[Inner vs Outer Loop]
+** xref:setup.adoc[Setup]
 
-* xref:module-02.adoc[2. GitHub Sourced Container]
-** xref:module-02.adoc#prerequisites[Install Prerequisites]
-** xref:module-02.adoc#container[Enable Container]
+
+* 2. Inner Loop Development
+** xref:inner-intro.adoc[Introduction]
+** xref:pipelines.adoc[Pipelines]
+** xref:argocd.adoc[Argo CD]
+** xref:devspaces.adoc[Dev Spaces]
+** xref:finish.adoc[Finish]
+
+* 3. Outer Loop Development
+** xref:production.adoc[Pushing to Production]
+
+* 4. Conclusion
+** xref:finish.adoc[Finish]
+** xref:resources.adoc[Resources]

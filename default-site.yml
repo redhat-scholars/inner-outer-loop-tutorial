@@ -1,6 +1,6 @@
 ---
 site:
-  title: Red Hat Summit 2024
+  title: OpenShift Inner & Outer Loop Development Workshop
   # url: https://redhat-scholars.github.io/course-template
   start_page: modules::index.adoc
 

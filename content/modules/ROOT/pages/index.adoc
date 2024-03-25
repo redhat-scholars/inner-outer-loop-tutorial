@@ -1,43 +1,43 @@
-= {lab_name}
+# Workshop Overview - Introduction
 
-The `lab_name` var, known as an asciidoc attribute, above was set in `./content/antora.yml` and can be used to set the lab_name or title of your content.
-You are both free to change its value and if you prefer to use a different var name, you can change the value of `lab_name`, for example to `title` in `./content/antora.yml` and then reference it in your content as `\{title}`. +
+Welcome to the *OpenShift Inner and Outer Loop Development* workshop! We're glad to have you here with us!
 
-image::rhel-logo-black.jpg[rhel-logo-black,55%,55%]
+## About this lab
 
-== Variables
+This workshop provides you with your own link:https://www.redhat.com/en/technologies/cloud-computing/openshift[*Red Hat OpenShift*,window='_blank'] cluster, and a series of exercises that teach you how to apply GitOps principles to a sample application. You will learn how to use link:https://catalog.redhat.com/software/container-stacks/detail/5ec54a4628834587a6b85ca5[*OpenShift Pipelines*,window='_blank'] to create a CI/CD pipeline, and how to use link:https://www.redhat.com/en/technologies/cloud-computing/openshift/gitops[*OpenShift GitOps*,window='_blank'] to deploy your application to multiple environments. You will also learn how to use link:https://developers.redhat.com/products/openshift-dev-spaces/overview[*OpenShift Dev Spaces*,window='_blank'] to develop and test your application locally, within the web browser.
 
-Other vars can also be set there, such as `ssh_user` and `ssh_password`, and referenced inline in the lab content by using the `\{foo}` syntax.
+image::demo-architecture.png[Architecture]
 
-This is another var, or asciidoc attribute, from `./content/antora.yml` {my_var}
+// This lab will guide you through the process of inner and outer loop development, using  to code and push changes to a Git repository, as well as start Tekton pipelines. Then, we'll use Argo CD to sync our application in both development and production environments. Through this lab, you'll learn how to set up and manage the entire application lifecycle within a Red Hat OpenShift cluster.
 
-== Writing your lab
+## Introduction
 
-Whatever type of content you are writing we'll refer to your *content* as "your lab" in this document.
+This workshop's demo application is a simple app that allows users to vote for their favorite option, currently a cat or dog, and view the results. In this lab, you will work with two main components: the `vote-api` (Go) and the `vote-ui` (Python).
 
-=== Lab structure
+image::vote-app.png[Vote App]
 
-Wether you are writing a lab
+This lab aims to demonstrate how to create a seamless CI/CD pipeline using OpenShift, Tekton, Argo CD, and OpenShift Dev Spaces. By the end of this lab, you will have a better understanding of GitOps and have learned how to:
 
-* First, we will build a monolithic application already compiled as RPM packages and put it into a container. This will allow us to deploy the application, copy it between machines, and update it separately from the operating system. This process affords us a portable and easily maintained component instead of tightly coupling the application with your operating system maintenance.
+- Set up an OpenShift cluster and prepare it for a GitOps workflow.
+- Work with Tekton to run multiple Pipelines to manage our image-building process.
+- Use webhooks to trigger pipelines automatically with Git.
+- Deploy and manage the `vote-api` and `vote-ui` applications using Argo CD.
+- Work with OpenShift Dev Spaces for an integrated development experience.
+- Implement GitOps principles for managing your application environments.
+- Monitor and manage drifts in your applications and environments.
 
-* In closing we will build a second container on a different operating system version that makes an application not packaged into RPMs. This will be similar to a web application deployment, positioning the correct files at the right locations. To do this, we will pull a project from GitHub and position the component files within our container image. The purpose of this is to achieve a portable application container that can deploy on several different versions of Red Hat Enterprise Linux. This also provides the benefit of decoupling your application maintenance, which would all happen by building new containers versus operating system maintenance. The container is no longer reliant on the operating system installed on the machine where the application is deployed.
+== What is OpenShift
 
-. Now let's examine this cluster a bit more by describing the cluster (the `$GUID` environment variable is already set for you so you can immediately describe your individual cluster):
-+
-[source,sh,role=execute]
-----
-podman ps
-----
-+
-.Sample Output
-[source,texinfo,subs="attributes"]
-----
-CONTAINER ID  IMAGE                        COMMAND           CREATED      STATUS      PORTS                 NAMES
-2dcfee9e50c4  docker.io/library/httpd:2.4  httpd-foreground  3 hours ago  Up 3 hours  0.0.0.0:8080->80/tcp  showroom-httpd
-----
+link:https://www.redhat.com/en/technologies/cloud-computing/openshift[Red Hat OpenShift,window='_blank'], the industry's leading hybrid cloud application platform powered by Kubernetes, brings together tested and trusted services to reduce the friction of developing, modernizing, deploying, running, and managing applications. OpenShift delivers a consistent experience across public cloud, on-premise, hybrid cloud, or edge architecture.
 
-=== Lab Access
+image:openshift-dashboard.png[]
 
-The terminal window to your right is *already* logged into the lab environment as the `{ssh_user}` user via `ssh`. 
-All steps of this lab are to be completed as the `{ssh_user}` user.
+== What is GitOps
+
+link:https://www.redhat.com/en/topics/devops/what-is-gitops[GitOps,window='_blank'] is a declarative way to implement continuous deployment for cloud-native applications. GitOps handles and automates complex deployments quickly, saving time during deployment and release cycles. You can use GitOps to create repeatable processes for managing OpenShift clusters and applications across multi-cluster Kubernetes environments.
+
+image:openshift-gitops-graphic.png[]
+
+## Next Steps
+
+Ready to get started with the lab? Let's begin, firstly, by learning a bit of theory about the inner vs. outer loop of development.
