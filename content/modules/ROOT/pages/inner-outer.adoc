@@ -33,7 +33,7 @@ image::devspaces-interface.png[Dev Spaces Interface]
 
 ### Outer Loop
 
-The outer loop pipeline is used for deploying applications to production using Argo CD within OpenShift Gitops. This stage starts after the inner loop when changes are pushed to the remote repository. The outer loop pipeline is triggered when developers push code to a Git repository. The pipeline will build the code, create a new image, and update the repository with the new image tag. Argo CD will then detect the change and deploy the new image to the production environment. The outer loop automates the deployment of the application to the Kubernetes cluster, ensuring that the infrastructure is always in sync with the desired state defined in the Git repository.
+The outer loop pipeline is used for deploying applications to production using Argo CD within OpenShift GitOps. This stage starts after the inner loop when changes are pushed to the remote repository. The outer loop pipeline is triggered when developers push code to a Git repository. The pipeline will build the code, create a new image, and update the repository with the new image tag. Argo CD will then detect the change and deploy the new image to the production environment. The outer loop automates the deployment of the application to the Kubernetes cluster, ensuring that the infrastructure is always in sync with the desired state defined in the Git repository.
 
 // .Argo CD syncing our application
 image::argocd-app-details-2.png[Argo CD App Details]
