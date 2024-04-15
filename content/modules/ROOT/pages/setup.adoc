@@ -131,7 +131,7 @@ Now, you'll be directed to the Argo CD dashboard.
 image::argocd.png[Argo CD]
 ////
 
-### Vote App Repository
+### GitLab Instance
 
 You can access Gitea from the *Lab Guides*, or you can visit Gitea using this link:https://gitea.%SUBDOMAIN%[*Gitea Link*,role='params-link',window='_blank']. Once Developer Hub is used to create the backend and frotend component repositories, both the source code repositories and GitOps manifests will be visible in Gitea.
 
