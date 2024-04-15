@@ -1,12 +1,18 @@
 # Workshop Overview - Setup
 
-In this section, we'll look at the setup of the OpenShift cluster we're using for today's lab. This includes the OpenShift Operators that have been installed and the projects that have been created for you. We'll also look at the tools we'll be using throughout the lab, including OpenShift Dev Spaces, OpenShift Pipelines, and OpenShift GitOps.
+In this section, we'll look at the setup of the OpenShift cluster we're using for today's lab. This includes Developer Hub and the OpenShift Operators that have been installed, as well as the projects that have been created for you. We'll look at the operators we'll be using throughout the lab, including OpenShift Dev Spaces, OpenShift Pipelines, and OpenShift GitOps.
 
 ## Red Hat Developer Tools
 
 Let's look at some of the inner and outer loop developer flow tools Red Hat provides. This includes tools for building, testing, deploying, and running applications. These tools are integrated and work together to provide a seamless developer experience. We can break these tools down as shown below.
 
 image::developer-flow.png[Developer Flow]
+
+### Red Hat Developer Hub
+
+link:https://developers.redhat.com/products/openshift-dev-spaces/overview[*Developer Hub*,window='_blank'] is a centralized, internal developer platform that provides a unified experience for developers to discover, build, and deploy applications on OpenShift. It serves as a single entry point for developers, offering a curated catalog of software templates, learning resources, and a comprehensive view of the application landscape.
+
+image::developer-hub.png[Red Hat Developer Hub]
 
 ### Inner Loop: OpenShift Dev Spaces
 
@@ -89,6 +95,18 @@ Once you're logged in, you'll be at the OpenShift dashboard. If you aren't alrea
 
 image::developer-perspective.png[Developer Perspective]
 
+### Developer Hub
+
+Let's also view the process of accessing the *Developer Hub*. You can access the Developer Hub Console from the *Lab Guides*, or you can visit the Developer Hub Console using this link: https://console-developer-hub.%SUBDOMAIN%[*Developer Hub Web Console Link*,role='params-link',window='_blank']. 
+
+Using the GitLab identity provider, you'll automatically log in with the below credentials to view the Developer Hub dashboard.
+
+- Username: `%USERID%`
+- Password: `openshift`
+
+image::developer-hub.png[Developer Hub Perspective]
+
+////
 ### Argo CD
 
 Let's look at *Argo CD*, a declarative, GitOps continuous delivery tool for Kubernetes provided in the OpenShift GitOps Operator. While you can access Argo CD from the *Lab Guides* or by using this link:https://argocd-server-argocd-%USERID%.%SUBDOMAIN%[*Argo CD link*,role='params-link',window='_blank']. You can also visit Argo CD from your OpenShift cluster. Within the *Developer* perspective, navigate to the `argocd-%USERID%` project, and visit the *Topology* page.
@@ -111,24 +129,18 @@ image::argocd-allow.png[Argo CD Allow]
 Now, you'll be directed to the Argo CD dashboard.
 
 image::argocd.png[Argo CD]
+////
 
 ### Vote App Repository
 
-You can access Gitea from the *Lab Guides*, or you can visit Gitea using this link:https://gitea.%SUBDOMAIN%[*Gitea Link*,role='params-link',window='_blank']. You'll also have access to multiple *Gitea* repositories that contain the Vote App source code and Argo CD application manifests. As a reference, here are your credentials:
+You can access Gitea from the *Lab Guides*, or you can visit Gitea using this link:https://gitea.%SUBDOMAIN%[*Gitea Link*,role='params-link',window='_blank']. Once Developer Hub is used to create the backend and frotend component repositories, both the source code repositories and GitOps manifests will be visible in Gitea.
+
+As a reference, here are your credentials:
 
 - Username: `%USERID%`
 - Password: `openshift`
 
 image::gitea.png[Gitea]
-
-Once logged in, you can access the following Vote App source repositories:
-
-- link:https://gitea.%SUBDOMAIN%/%USERID%/pipelines-vote-ui[Vote App UI Frontend,role='params-link',window='_blank']
-- link:https://gitea.%SUBDOMAIN%/%USERID%/pipelines-vote-api[Vote App API Backend,role='params-link',window='_blank']
-
-We also have a repository that contains the ArgoCD application manifests for the Vote App.
-
-- link:https://gitea.%SUBDOMAIN%/%USERID%/vote-app-gitops[Vote App GitOps,role='params-link',window='_blank']
 
 ## Next steps
 
