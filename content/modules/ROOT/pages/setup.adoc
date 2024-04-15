@@ -91,7 +91,7 @@ You'll be prompted to log in to OpenShift, and you can use the OpenShift login b
 
 image::openshift-dashboard.png[OpenShift Dashboard]
 
-Once you're logged in, you'll be at the OpenShift dashboard. If you aren't already, you can navigate to the *Developer* perspective, where we'll be spending most of our time.
+Once you're logged in, you'll be at the OpenShift dashboard. If you aren't already, you can navigate to the *Developer* perspective, where we'll be spending some of our time.
 
 image::developer-perspective.png[Developer Perspective]
 
@@ -144,4 +144,4 @@ image::gitea.png[Gitea]
 
 ## Next steps
 
-Your environment is now ready to go! The cluster has been pre-configured with the necessary OpenShift Operators, and you have access to Argo CD and the necessary Git repositories. From here, we can wrap up the introduction and begin our lab!
+Your environment is now ready to go! The cluster has been pre-configured with the necessary OpenShift Operators, and you have access to DeveloperHub and the Gitea instance. From here, we can wrap up the introduction and begin our lab!
