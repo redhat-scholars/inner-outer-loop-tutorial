@@ -16,7 +16,7 @@ The demo application in this workshop is a simple voting app that allows users t
 
 image::vote-app.png[Vote App]
 
-By the end of this lab, you will have a better understanding of the inner and outer loop development flow using OpenShift, Developer Hub, Backstage, Argo CD, and GitOps. You will learn how to:
+By the end of this lab, you will have a better understanding of the inner and outer loop development flow using OpenShift and concepts such as Internal Developer Platforms with Backstage, Pipelines with Tekton, and GitOps with Argo CD. You will learn how to:
 
 - Set up an OpenShift cluster and access Red Hat Developer Hub.
 - Explore the Developer Hub's learning paths, software templates, plugins, and more.
