@@ -1,6 +1,6 @@
 # Workshop Overview - Setup
 
-In this section, we'll look at the setup of the OpenShift cluster we're using for today's lab. This includes Developer Hub and the OpenShift Operators that have been installed, as well as the projects that have been created for you. We'll look at the operators we'll be using throughout the lab, including OpenShift Dev Spaces, OpenShift Pipelines, and OpenShift GitOps.
+In this section, we'll look at the setup of the link:https://www.redhat.com/en/technologies/cloud-computing/openshift[OpenShift] cluster we're using for today's lab. This includes link:https://developers.redhat.com/rhdh/overview[Developer Hub] and the link:https://www.redhat.com/en/technologies/cloud-computing/openshift/what-are-openshift-operators[OpenShift Operators] that have been installed, as well as the projects that have been created for you. We'll look at the operators we'll be using throughout the lab, including link:https://developers.redhat.com/products/openshift-dev-spaces/overview[OpenShift Dev Spaces], link:https://www.redhat.com/en/technologies/cloud-computing/openshift/pipelines[OpenShift Pipelines], and link:https://www.redhat.com/en/technologies/cloud-computing/openshift/gitops[OpenShift GitOps].
 
 ## Red Hat Developer Tools
 
@@ -8,7 +8,7 @@ Let's look at some of the inner and outer loop developer flow tools Red Hat prov
 
 image::developer-flow.png[Developer Flow]
 
-### Red Hat Developer Hub
+### Inner Loop: Red Hat Developer Hub
 
 link:https://developers.redhat.com/products/openshift-dev-spaces/overview[*Developer Hub*,window='_blank'] is a centralized, internal developer platform that provides a unified experience for developers to discover, build, and deploy applications on OpenShift. It serves as a single entry point for developers, offering a curated catalog of software templates, learning resources, and a comprehensive view of the application landscape.
 
@@ -22,7 +22,7 @@ image::devspaces-interface.png[OpenShift Dev Spaces]
 
 ### Outer Loop: OpenShift Pipelines
 
-link:https://catalog.redhat.com/software/container-stacks/detail/5ec54a4628834587a6b85ca5[*OpenShift Pipelines*,window='_blank'] is a cloud-native, continuous integration and delivery (CI/CD) solution for building pipelines using link:https://tekton.dev[*Tekton*,window='_blank']. Tekton is a flexible, Kubernetes-native, open-source CI/CD framework that enables automating deployments across multiple platforms (Kubernetes, serverless, VMs, etc.) by abstracting away the underlying implementation details.
+link:https://www.redhat.com/en/technologies/cloud-computing/openshift/pipelines[*OpenShift Pipelines*,window='_blank'] is a cloud-native, continuous integration and delivery (CI/CD) solution for building pipelines using link:https://tekton.dev[*Tekton*,window='_blank']. Tekton is a flexible, Kubernetes-native, open-source CI/CD framework that enables automating deployments across multiple platforms (Kubernetes, serverless, VMs, etc.) by abstracting away the underlying implementation details.
 
 image::pipeline-details.png[OpenShift Pipelines]
 
@@ -40,25 +40,35 @@ NOTE: Everything has already been pre-installed on your cluster, so there's no n
 
 Throughout this lab, you'll have your own account on an OpenShift 4.12 cluster. To save time, this cluster has been pre-configured with the below OpenShift Operators. You can think of Operators as add-ons to an OpenShift or Kubernetes cluster that provide extended features/capabilities. We've attached screenshots of each operator's details page, as only the cluster *admin* account can view these details.
 
-### Operator: OpenShift Pipelines 
+### OpenShift Operators
+
+[%collapsible]
+====
 We'll use *OpenShift Pipelines* to pull our code from Git, build it, and update the Git repository with the new image tag.
 
 image::pipelines-operator-details.png[Pipelines Details]
+====
 
-### Operator: OpenShift GitOps 
+[%collapsible]
+====
 We'll use *OpenShift GitOps* to deploy our application to the cluster and manage the application lifecycle. Our two projects, `vote-app-dev-%USERID%` and `vote-app-prod-%USERID%`, will be managed by ArgoCD, and we'll be able to demonstrate high availability using GitOps.
 
 image::gitops-operator-details.png[GitOps Details]
+====
 
-### Operator: OpenShift Dev Spaces
+[%collapsible]
+====
 We'll use *OpenShift Dev Spaces* to bootstrap our development environment quickly and start coding. We'll be able to make changes to our code and see them reflected in the cluster in real time and commit our changes to Git.
 
 image::devspaces-operator-details.png[Dev Spaces Details]
+====
 
-### Operator: OpenShift Web Terminal
+[%collapsible]
+====
 Finally, the *Web Terminal* is a web-based terminal for OpenShift. It allows users to access a terminal in a pod from the OpenShift Web Console, and it'll help us work within our cluster without having to download the link:https://docs.openshift.com/container-platform/4.12/cli_reference/openshift_cli/getting-started-cli.html[*OpenShift CLI (oc)*,window='_blank'].
 
 image::webterminal-operator-details.png[Web Terminal Details]
+====
 
 ## Lab Checks
 
@@ -78,31 +88,37 @@ image::webterminal-operator-details.png[Web Terminal Details]
 
 // While we won't be using the *admin* account during this lab, it's still important to understand these operators as they help extend the functionality of OpenShift and allow us to perform this lab.
 
-### OpenShift
+### OpenShift Web Console
 
-First, let's ensure we're logged into the *OpenShift* cluster. You can access the OpenShift Console from the *Lab Guides*, or you can visit the OpenShift Console using this link:https://console-openshift-console.%SUBDOMAIN%[*OpenShift Web Console Link*,role='params-link',window='_blank']. 
+First, let's ensure we're logged into the *OpenShift* cluster through the Web Console. You can access the OpenShift Console from the lab's start page, or you can visit the OpenShift Console using this link:https://console-openshift-console{console_url}[*OpenShift Web Console Link*,role='params-link',window='_blank']. Here, select the `rhsso` option to use the Red Hat Single Sign-On (SSO) identity provider.
+
+image::openshift-login-options.png[OpenShift Page Login]
+
+You'll be prompted to log in with your credentials, here they are as a reference:
+
+- Username: `{user}`
+- Password: `{password}`
 
 image::openshift-login.png[OpenShift Page Login]
 
-You'll be prompted to log in to OpenShift, and you can use the OpenShift login button to do so. As a reference, here are your credentials:
-
-- Username: `%USERID%`
-- Password: `openshift`
+Once you're logged in, you'll be at the OpenShift dashboard.
 
 image::openshift-dashboard.png[OpenShift Dashboard]
 
-Once you're logged in, you'll be at the OpenShift dashboard. If you aren't already, you can navigate to the *Developer* perspective, where we'll be spending some of our time.
+If you aren't already, you can navigate to the *Developer* perspective, where we'll be spending some of our time.
 
 image::developer-perspective.png[Developer Perspective]
 
 ### Developer Hub
 
-Let's also view the process of accessing the *Developer Hub*. You can access the Developer Hub Console from the *Lab Guides*, or you can visit the Developer Hub Console using this link: https://console-developer-hub.%SUBDOMAIN%[*Developer Hub Web Console Link*,role='params-link',window='_blank']. 
+Let's also view the process of accessing the *Developer Hub*. You can access the Developer Hub dashboard either from the the OpenShift Web Console app launcher, or you can visit the Developer Hub Console using this link: https://backstage-backstage{console_url}[*Developer Hub Dashboard*,role='params-link',window='_blank']. 
 
-Using the GitLab identity provider, you'll automatically log in with the below credentials to view the Developer Hub dashboard.
+image::developer-hub-login.png[Developer Hub Perspective]
 
-- Username: `%USERID%`
-- Password: `openshift`
+Using the GitLab identity provider, you can log in with the below credentials to visit the Developer Hub dashboard. You may need to authorize `keycloak` (Identity Access Management) to access your GitLab account:
+
+- Username: `{user}`
+- Password: `{password}`
 
 image::developer-hub.png[Developer Hub Perspective]
 
@@ -133,15 +149,15 @@ image::argocd.png[Argo CD]
 
 ### GitLab Instance
 
-You can access Gitea from the *Lab Guides*, or you can visit Gitea using this link:https://gitea.%SUBDOMAIN%[*Gitea Link*,role='params-link',window='_blank']. Once Developer Hub is used to create the backend and frotend component repositories, both the source code repositories and GitOps manifests will be visible in Gitea.
+You can access GitLab from the lab's start page, or you can visit GitLab using this link:https://gitlab-gitlab{console_url}[*GitLab Link*,role='params-link',window='_blank']. Once Developer Hub is used to create the backend and frotend component repositories, both the source code repositories and GitOps manifests will be visible in GitLab.
 
-As a reference, here are your credentials:
+You may already be signed into GitLab if you've already signed into Developer Hub (which uses GitLab as a identity provider). As a reference, here are your credentials:
 
-- Username: `%USERID%`
-- Password: `openshift`
+- Username: `{user}`
+- Password: `{password}`
 
-image::gitea.png[Gitea]
+image::gitlab.png[GitLab]
 
 ## Next steps
 
-Your environment is now ready to go! The cluster has been pre-configured with the necessary OpenShift Operators, and you have access to DeveloperHub and the Gitea instance. From here, we can wrap up the introduction and begin our lab!
+Your environment is now ready to go! The cluster has been pre-configured with the necessary OpenShift Operators, and you have access to Developer Hub and the GitLab instance. From here, we can wrap up the introduction and begin our lab!
