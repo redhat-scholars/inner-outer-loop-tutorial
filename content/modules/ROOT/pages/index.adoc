@@ -1,10 +1,10 @@
 # Workshop Overview - Introduction
 
-Welcome to the *OpenShift Inner and Outer Loop Development* workshop! We're glad to have you here with us at https://www.redhat.com/en/summit[*Red Hat Summit*] 2024!
+Welcome to the *OpenShift Inner and Outer Loop Development* workshop. We're glad to have you here with us at https://www.redhat.com/en/summit[*Red Hat Summit*] 2024!
 
 ## About this lab
 
-This workshop provides you with your own link:https://www.redhat.com/en/technologies/cloud-computing/openshift[*Red Hat OpenShift*,window='_blank'] cluster, and a series of exercises that teach you how to use link:https://www.redhat.com/en/technologies/cloud-computing/openshift[*Red Hat OpenShift*,window='_blank'] and the following technologies for an inner and outer loop development workflow. You will learn how to use link:https://www.redhat.com/en/technologies/cloud-computing/openshift/pipelines[*OpenShift Pipelines*,window='_blank'] to work with CI/CD pipelines, how to use link:https://www.redhat.com/en/technologies/cloud-computing/openshift/gitops[*OpenShift GitOps*,window='_blank'] with deploying and monitoring applications to multiple environments. You will also learn how to use link:https://developers.redhat.com/products/openshift-dev-spaces/overview[*OpenShift Dev Spaces*,window='_blank'] to develop and test your application locally, within the web browser. The following diagram shows the architecture of the lab:
+This workshop provides you with your own link:https://www.redhat.com/en/technologies/cloud-computing/openshift[*Red Hat OpenShift*,window='_blank'] cluster, and a series of exercises that teach you how to use OpenShift and the following technologies for an inner and outer loop development workflow. You will learn how to use link:https://www.redhat.com/en/technologies/cloud-computing/openshift/pipelines[*OpenShift Pipelines*,window='_blank'] to build and deploy applications to multiple environments (development and production) with CI/CD pipelines, how to use link:https://www.redhat.com/en/technologies/cloud-computing/openshift/gitops[*OpenShift GitOps*,window='_blank'] to handle management and monitoring of applications through a GitOps model. You will also learn how to use link:https://developers.redhat.com/products/openshift-dev-spaces/overview[*OpenShift Dev Spaces*,window='_blank'] to develop and test your application locally, within the web browser. The following diagram shows the architecture of the lab:
 
 image::inner_outer_diagram.png[Architecture]
 
@@ -16,29 +16,28 @@ The demo application in this workshop is a simple voting app that allows users t
 
 image::vote-app.png[Vote App]
 
-By the end of this lab, you will have a better understanding of the inner and outer loop development flow using OpenShift and concepts such as Internal Developer Platforms with Backstage, Pipelines with Tekton, and GitOps with Argo CD. You will learn how to:
+By the end of this lab, you will have a better understanding of the inner and outer loop development flow using OpenShift and concepts such as *Internal Developer Platforms* with link:https://backstage.io/[Backstage], *Pipelines* with link:https://tekton.dev/[Tekton], and *GitOps* with link:https://argo-cd.readthedocs.io/[Argo CD]. This workshop includes the following steps:
 
 - Set up an OpenShift cluster and access Red Hat Developer Hub.
 - Explore the Developer Hub's learning paths, software templates, plugins, and more.
-- Create backend and frontend components using software templates.
-- Deploy and promote components to different environments using pipelines triggered by Git releases.
+- Create backend and frontend components using software templates and explore the component plugins from Developer Hub.
+- Build, deploy, and promote components to different environments using pipelines triggered by Git releases.
 - Modify components using OpenShift Dev Spaces or a local IDE.
-- Understand the role of Argo CD in the GitOps workflow.
-- Manage your application using GitOps principles and monitor for drifts.
+- Explore Argo CD to understand the GitOps model, and manage (as well as monitor) the application in environments through GitOps principles.
 
-== What is OpenShift
+== What is OpenShift?
 
 link:https://www.redhat.com/en/technologies/cloud-computing/openshift[Red Hat OpenShift,window='_blank'], the industry's leading hybrid cloud application platform powered by Kubernetes, brings together tested and trusted services to reduce the friction of developing, modernizing, deploying, running, and managing applications. OpenShift delivers a consistent experience across public cloud, on-premise, hybrid cloud, or edge architecture.
 
 image:openshift-dashboard.png[]
 
-== What is Developer Hub
+== What is Developer Hub?
 
 link:https://developers.redhat.com/developer-hub[Red Hat Developer Hub,window='_blank'] is a centralized platform that provides a comprehensive set of tools, resources, and services to help developers streamline their development processes and accelerate application delivery. It offers a unified experience for developers to discover, create, and deploy applications on OpenShift.
 
 image:developer-hub-features.png[]
 
-== What is GitOps
+== What is GitOps?
 
 link:https://www.redhat.com/en/topics/devops/what-is-gitops[GitOps,window='_blank'] is a declarative way to implement continuous deployment for cloud-native applications. GitOps handles and automates complex deployments quickly, saving time during deployment and release cycles. You can use GitOps to create repeatable processes for managing OpenShift clusters and applications across multi-cluster Kubernetes environments.
 
