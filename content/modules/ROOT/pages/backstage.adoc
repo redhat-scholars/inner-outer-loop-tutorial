@@ -1,0 +1,53 @@
+# Inner Loop Development - Developer Hub
+
+In this section, we'll explore Developer Hub, an link:https://developers.redhat.com/articles/2024/01/16/red-hat-developer-hub-your-gateway-seamless-development[Internal Developer Platform (IDP) build from the Backstage project at Spotify]. Developer Hub provides a unified developer experience for building, testing, and deploying applications on OpenShift. It's a single pane of glass for developers to access tools, services, and resources needed to build applications. In this section, we'll use Developer Hub to scaffold the projects for the Vote Application's microservices, view the plugins that extend the functionality of Developer Hub, and explore's features!
+
+## Learning about the Developer Hub
+
+Once we've arrived to the Developer Hub homepage, we can view the various pages and tools that allow us to significantly ease the cloud-native software development experience for our developers.
+
+### Homepage
+
+Upon entering Red Hat Developer Hub, users are created with a homepage to provide quick access and saved links to the various different tools, technologies that are most commonly used. This homepage can be customized to fit the needs of the users.
+
+image::developer-hub-homepage.png[Developer Hub Homepage]
+
+### Catalog
+
+The Catalog page provides a list of all the services, tools, and resources that are available to developers. It's essentially a well-organized and searchable inventory for everything in your project. For development teams, this catalog is particularly useful for managing project dependencies and mitigating overall risk among the various elements that are interdependent. Here we can view all API's, components, resources, users, and more.
+
+NOTE: For existing services, you can register them by adding a YAML to the repository that defines details about the service, and add them to our catalog.
+
+image::developer-hub-catalog.png[Developer Hub Catalog]
+
+### APIs
+
+The APIs page is useful for developers who are building applications that require access to external services or data. We're able to register APIs simply by using YAML that has defined information about where the API is located, what it does, and how to access it, and it can build a link:https://swagger.io/[Swagger API] for it and product that API object.
+
+image::developer-hub-apis.png[Developer Hub APIs]
+
+### Learning Paths
+
+The Learning Paths page is particularly useful for developers who are looking to learn new skills or learn a specific technology stack we may use, and is opinionated. There are a number of learning paths out of the box from link:https://developers.redhat.com/[Red Hat Developer].
+
+image::developer-hub-learning-paths.png[Developer Hub Learning Paths]
+
+### Software templates
+
+In Backstage, link:https://backstage.io/docs/features/software-templates/[templates] are a way to create new software projects from a predefined set of files. Templates can be used to create new services or software projects. The Software Templates page provides a list of all the templates that are available to developers, and include all the necessary settings and structures to get projects started. Thus, developers spend less time with configuration and initial setup, and more time on the actual development. In addition, these templates may include the organization's preferred tools for error-checking code, verifying security validations, and building trusted pipelines for a secure supply chain. 
+
+image::developer-hub-software-templates.png[Developer Hub Software Templates]
+
+### Additional Features
+
+We'll briefly explore some of the additional features that Developer Hub provides:
+
+*Tech Radar*: The Tech Radar page provides a visual representation of the technologies that are being used in the project. It's a great way to see what technologies are being used, and what technologies are being considered for future use.
+
+image::developer-hub-tech-radar.png[Developer Hub Tech Radar]
+
+*Docs*: These are the documentation pages that live together with their code, and are written in Markdown. They provide a way to document the project, and provide information about the project to other developers.
+
+*Clusters*: Developer Hub can be used to manage multiple clusters, and provides a way to view the status of the clusters their resources.
+
+## Scaffolding the Software Templates

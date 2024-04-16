@@ -13,6 +13,7 @@ In this module, we'll perform several steps during the inner loop development ph
 - We'll start by exploring the Developer Hub, learning about internal developer platforms, software templates, learning paths, and the tech radar.
 - Using software templates, we will create the backend (`vote-api`) and frontend (`vote-ui`) components, along with their respective GitOps repositories.
 - We'll review the created repositories and explore the CI/CD pipelines, API definitions, and other plugins in the Developer Hub.
+- We will use OpenShift Pipelines to build and deploy the application to our development environment as a container.
 - Next, we will access the user workspace (OpenShift Dev Spaces) to explore and understand the inner loop development workflow.
 - Inside the workspace, we will make a change to the frontend (e.g., changing the voting options from cat vs. dog to cat vs. unicorn) and test the changes locally.
 - Once satisfied with the changes, we will commit and push them to the GitOps repository, triggering the CI/CD pipeline.

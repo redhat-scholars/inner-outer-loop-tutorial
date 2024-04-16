@@ -6,6 +6,7 @@
 
 * 2. Inner Loop Development
 ** xref:inner-intro.adoc[Introduction]
+** xref:backstage.adoc[Backstage]
 ** xref:pipelines.adoc[Pipelines]
 ** xref:argocd.adoc[Argo CD]
 ** xref:devspaces.adoc[Dev Spaces]
