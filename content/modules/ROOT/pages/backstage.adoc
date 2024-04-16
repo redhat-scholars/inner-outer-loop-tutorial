@@ -50,4 +50,45 @@ image::developer-hub-tech-radar.png[Developer Hub Tech Radar]
 
 *Clusters*: Developer Hub can be used to manage multiple clusters, and provides a way to view the status of the clusters their resources.
 
-## Scaffolding the Software Templates
+## Kicking off the Software Template Creation
+
+Let's see the power of Developer Hub in action by scaffolding the microservices needed for the Vote Application. We'll use the Software Templates already registered (from a skeleton repository, manifests, and YAML) as a ready-made plan for getting these projects started.
+
+### Creating the Backend Component
+
+Begin from the *Create* button on the left-hand side, and choose the *Go API backend for the Vote App*.
+
+image::developer-hub-create.png[Developer Hub Create]
+
+Here, we can leave everything as it is, the name, description, and cluster to set things up on, and click on the *Next* button. 
+
+TIP: How are these values pre-filled? This is thanks to the 
+link:https://gitlab-gitlab{console_url}/rhdh/inner-outer-loop-templates/-/blob/main/vote-api-go/template.yaml[`template.yaml`,role='params-link',window='_blank'] that defines all of the specifics for the template, pre-registered to Developer Hub.
+
+image::developer-hub-create-go-api.png[Developer Hub Create Go API]
+
+Now, for storing the container image, we can leave these parameters as is to specify OpenShift's internal registry, and click on the *Next* button.
+
+image::developer-hub-create-go-api-image.png[Developer Hub Create Go API Image]
+
+Finally, we can review these details on the final page and select the *Create* button to kick off the creation of the Go API backend for the Vote App.
+
+image::developer-hub-create-go-api-review.png[Developer Hub Create Go API Review]
+
+During the creation of this component, Developer Hub is creating the source code repository and the manifest repository, setting up the pipeline and GitOps manifests, and registering this new component on Developer Hub.
+
+image::developer-hub-create-go-api-progress.png[Developer Hub Create Go API Progress]
+
+We'll view the catalog here shortly to view all of the created resources, but feel free to select *Open Component in catalog* to glance over what the created component looks like!
+
+image::developer-hub-create-go-api-complete.png[Developer Hub Create Go API Complete]
+
+You can also view the *API* page to see the newly created API for the backend component, `vote-api-{user}`.
+
+image::developer-hub-create-go-api-api.png[Developer Hub Create Go API API]
+
+### Creating the Frontend Component
+
+Similar to the creation process of the backend component, we'll create the frontend component for the Vote Application. Begin from the *Create* button on the left-hand side, and choose the *Python frontend for the Vote App*.
+
+image::developer-hub-create-python.png[Developer Hub Create Python]
