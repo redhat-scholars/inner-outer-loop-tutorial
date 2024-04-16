@@ -67,7 +67,7 @@ link:https://gitlab-gitlab{console_url}/rhdh/inner-outer-loop-templates/-/blob/m
 
 image::developer-hub-create-go-api.png[Developer Hub Create Go API]
 
-Now, for storing the container image, we can leave these parameters as is to specify OpenShift's internal registry, and click on the *Next* button.
+Now, for storing the container image, we can leave these parameters as is to specify OpenShift's internal registry, and click on the *Review* button.
 
 image::developer-hub-create-go-api-image.png[Developer Hub Create Go API Image]
 
@@ -75,7 +75,7 @@ Finally, we can review these details on the final page and select the *Create* b
 
 image::developer-hub-create-go-api-review.png[Developer Hub Create Go API Review]
 
-During the creation of this component, Developer Hub is creating the source code repository and the manifest repository, setting up the pipeline and GitOps manifests, and registering this new component on Developer Hub.
+During the creation of this component, Developer Hub is creating the source code repository and the manifest repository, setting up the GitOps manifests, and registering this new component on Developer Hub.
 
 image::developer-hub-create-go-api-progress.png[Developer Hub Create Go API Progress]
 
@@ -92,3 +92,85 @@ image::developer-hub-create-go-api-api.png[Developer Hub Create Go API API]
 Similar to the creation process of the backend component, we'll create the frontend component for the Vote Application. Begin from the *Create* button on the left-hand side, and choose the *Python frontend for the Vote App*.
 
 image::developer-hub-create-python.png[Developer Hub Create Python]
+
+Let's leave the pre-filled values as they are and click on the *Next* button. These values will be reflected once the component is created on Developer Hub, and we'll take a look at it shortly.
+
+image::developer-hub-create-python-frontend.png[Developer Hub Create Python Frontend]
+
+On the next page, we can leave the default values for the container image details for the frontend component. Click on the *Review* button.
+
+image::developer-hub-create-python-frontend-image.png[Developer Hub Create Python Frontend Image]
+
+Review the details on the final page and click on the *Create* button to initiate the creation of the Python frontend component.
+
+image::developer-hub-create-python-frontend-review.png[Developer Hub Create Python Frontend Review]
+
+Just like the backend component, Developer Hub will create the necessary repositories, set up the GitOps manifests, and register the frontend component in the catalog.
+
+image::developer-hub-create-python-frontend-progress.png[Developer Hub Create Python Frontend Progress]
+
+## Exploring the Created Components
+
+Once the creation process is complete, you can open the frontend component in the catalog directly from the creation process, or simply visit the Catalog page to view the two created components. Let's explore them in more detail. Here, we can use various filters to search by name, owner, tag, etc.
+
+image::developer-hub-catalog-vote-components.png[Developer Hub Catalog Vote Components]
+
+Let's select on the `vote-api-{user}` component, and here at the *Overview* we can view some basic details of the component, including some handy links, Git repository statistics, source code and tech docs, as well as information pulled from the Argo CD applications that have been created.
+
+image::developer-hub-vote-api-details.png[Developer Hub Vote API Details]
+
+Let's check out some of the other tabs available for the component, powered by the Plugins for Red Hat Developer Hub:
+
+### Topology
+View the component's topology within OpenShift and its relationships with other components. This is a great way to get a quick view without having to be within the OpenShift Web Console.
+
+image::developer-hub-vote-api-topology.png[Developer Hub Vote API Topology]
+
+### Issues & Pull/Merge Requests
+
+View and manage Git issues, as well as pull/merge requests, for the source code repository associated with the component.
+
+### CI 
+View the status and details of the pipelines created and used by the component, as well as the Pipeline's execution and logs.
+
+image::developer-hub-vote-api-ci.png[Developer Hub Vote API CI]
+
+### CD 
+Check out the deployment status and health for Argo CD applications associated with the component. 
+
+image::developer-hub-vote-api-cd.png[Developer Hub Vote API CD]
+
+### Kubernetes
+The Kubernetes tab provides a view of the Kubernetes resources associated with the component, including the pods, services, deployments, and other resources. You'll notice there are currently errors with pulling the `vote-api` image, as we haven't built and pushed the image yet using the pipeline.
+
+image::developer-hub-vote-api-kubernetes.png[Developer Hub Vote API Kubernetes]
+
+### API
+As we viewed before in it's own section, here we can view the provided and consumed API's for the component.
+
+### Dependencies
+This dependency mapping provides a visual representation of the component to users, API's, and more. When you begin to build out a more complex application, this can be a great way to understand the relationships between the various components.
+
+image::developer-hub-vote-api-dependencies.png[Developer Hub Vote API Dependencies]
+
+## Reviewing the Created Repositories
+
+As part of the component creation process, Developer Hub automatically invokes the GitLab (or whichever Git provider you happen to use) to create the necessary repositories for the backend and frontend components. Within the component overview, you can find the links to the source code repositories for the components, or use this link link:https://gitlab-gitlab{console_url}/{user}/vote-api[here for the vote-api repository,role='params-link',window='_blank'].
+
+image::developer-hub-vote-api-repo.png[Developer Hub Vote API Repo]
+
+In the new page that opened, explore the repository's contents, including the source code files and configuration files (such as the `catalog-info.yaml` that defines the component listing in the catalog). Similarly, feel free navigate to the source code repository for the `vote-ui` component and explore its contents.
+
+image::developer-hub-vote-api-repo-contents.png[Developer Hub Vote API Repo Contents]
+
+In addition to the source code repositories, Developer Hub also creates the corresponding GitOps repositories for each component. These repositories contain the Kubernetes manifests and Helm charts required for deploying the components. You can find this in your user's projects, or use this link link:https://gitlab-gitlab{console_url}/users/{user}/projects[here to navigate to your projects,role='params-link',window='_blank'].
+
+image::developer-hub-vote-gitops-repo.png[Developer Hub Vote API GitOps Repo]
+
+Explore the contents of the GitOps repositories, including the Kubernetes manifests, Helm charts, and any other configuration files. We'll be modifying these later on to define the deployment details of our application with Argo CD.
+
+image::developer-hub-vote-gitops-repo-contents.png[Developer Hub Vote API GitOps Repo Contents]
+
+## Next Steps
+
+Developer Hub has saved us time by helping scaffold new projects and ensuring our organization's best practices and security starts from the beginning. With the backend and frontend components created and their respective repositories set up, let's now kick off the pipelines to build and deploy the applications to OpenShift.
