@@ -1,6 +1,6 @@
-# Workshop Development - Introduction
+# Inner Loop Development - Introduction
 
-In this module, we'll perform a few steps during our development phase of the Vote App deployment.
+In this module, we'll perform several steps during the inner loop development phase of the Vote App deployment using Developer Hub, OpenShift Pipelines, OpenShift GitOps, and OpenShift Dev Spaces.
 
 ## Development Module Flow
 
@@ -10,6 +10,14 @@ In this module, we'll perform a few steps during our development phase of the Vo
 - Argo CD will then detect a drift between what is declared in Git and what is available in the cluster, and we'll manually sync the application.
 - Finally, we will use the OpenShift Web Terminal to manually scale the deployment, as we still need to implement high-availability in the next module.
 
+- We'll start by exploring the Developer Hub, learning about internal developer platforms, software templates, learning paths, and the tech radar.
+- Using software templates, we will create the backend (`vote-api`) and frontend (`vote-ui`) components, along with their respective GitOps repositories.
+- We'll review the created repositories and explore the CI/CD pipelines, API definitions, and other plugins in the Developer Hub.
+- Next, we will access the user workspace (OpenShift Dev Spaces) to explore and understand the inner loop development workflow.
+- Inside the workspace, we will make a change to the frontend (e.g., changing the voting options from cat vs. dog to cat vs. unicorn) and test the changes locally.
+- Once satisfied with the changes, we will commit and push them to the GitOps repository, triggering the CI/CD pipeline.
+- We'll verify the changes in the dev environment deployed by the CI/CD pipeline.
+
 ## Next Steps 
 
-Great, we'll be learning a lot through this development module! Let's begin.
+In this module, we'll focus on the inner loop development process, which involves making changes to the application code, testing them locally, and pushing the changes to trigger the CI/CD pipeline. We'll learn how the Developer Hub, OpenShift Pipelines, and OpenShift Dev Spaces work together to streamline this process. Let's get started!
