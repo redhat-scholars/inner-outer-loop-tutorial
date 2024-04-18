@@ -239,7 +239,7 @@ image::pipeline-details.png[]
 
 For reference, here are the pipeline steps:
 
-- `git-clone`: This step clones the local Git repository that contains the source code for the application. We're able to do so because of a `gitea-gitops` secret that was created for you. This secret contains the username and password to access the Gitea repository.
+- `git-clone`: This step clones the local Git repository that contains the source code for the application. We're able to do so because of a `gitlab-gitops` secret that was created for you. This secret contains the username and password to access the GitLab repository.
 - `build-image`: This step builds the image and pushes it to the internal OpenShift registry. The image name is passed in as a parameter.
 - `resync`: This final step updates the deployment manifests in the Git repository.
 
@@ -283,7 +283,7 @@ img
 
 With the `vote-ui-build` pipeline started, let's go ahead and check the status of this Pipeline. We should be at the *PipelineRuns* view, and after a minute or two, the `vote-ui-app-pipeline` PipelineRun should be completed, or we could view this from Developer Hub.
 
-## Checking the status of the pipelines
+### Checking the status of the pipelines
 
 From the *PipelineRuns* section, we can examine various details about the specific PipelineRun, such as the YAML executed, each TaskRun executed, parameters used for the PipelineRun, and logs from each Task.
 
@@ -293,7 +293,7 @@ For example, viewing the logs from the `build-image` Task, we can see the output
 
 img
 
-## Checking the status of the applications
+### Checking the status of the applications
 
 Now that the pipelines have finished, let's check the status of the deployments. Click on the *Topology* left-hand tab to see the list of deployments that have been created in the `vote-app-dev-{user}` project. We now have a new application called *Triggers* which contains two deployments, one for the `vote-api` and one for the `vote-ui`, which listen for changes in the source repositories to rebuild and redeploy the applications in this environment. More importantly, however, are the two new microservices that have been built and deployed from our source code.
 
@@ -337,7 +337,7 @@ img
 
 As the end goal of our workshop is to bring our application into production, please repeat the same steps we've just done for the `vote-ui-promote`, the steps will be the same. When finished, we can take a look at the final result in the OpenShift topology and on the Developer Hub, and proceed to work from the initial project creation.
 
-## Viewing the application in production
+### Viewing the application in production
 
 Now that the pipelines have finished moving our application from development to production, let's check the status of the deployments. Click on the *Topology* left-hand tab to see the list of deployments that have been created in the `vote-app-prod-{user}` project.
 

@@ -10,7 +10,6 @@
 ** xref:pipelines.adoc[Pipelines]
 ** xref:devspaces.adoc[Dev Spaces]
 ** xref:argocd.adoc[Argo CD]
-** xref:production.adoc[Pushing to Production]
 ** xref:finish.adoc[Finish]
 
 * 3. Conclusion
