@@ -1,6 +1,6 @@
-# Inner Loop Development - Developer Hub
+# Developer Hub
 
-In this section, we'll explore Developer Hub, an link:https://developers.redhat.com/articles/2024/01/16/red-hat-developer-hub-your-gateway-seamless-development[Internal Developer Platform (IDP) build from the Backstage project at Spotify]. Developer Hub provides a unified developer experience for building, testing, and deploying applications on OpenShift. It's a single pane of glass for developers to access tools, services, and resources needed to build applications. In this section, we'll use Developer Hub to scaffold the projects for the Vote Application's microservices, view the plugins that extend the functionality of Developer Hub, and explore's features!
+In this section, we'll explore Developer Hub, an link:https://developers.redhat.com/articles/2024/01/16/red-hat-developer-hub-your-gateway-seamless-development[Internal Developer Platform (IDP) build from the Backstage project at Spotify]. Developer Hub provides a unified developer experience for building, testing, and deploying applications on OpenShift. It's a single pane of glass for developers to access tools, services, and resources needed to build applications. In this section, we'll use Developer Hub to scaffold the projects for the Vote Application's microservices, view the plugins that extend the functionality of Developer Hub, and explore it's features!
 
 ## Learning about the Developer Hub
 

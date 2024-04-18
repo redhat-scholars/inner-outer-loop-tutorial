@@ -1,28 +1,37 @@
 # Workshop Development - Pipelines
 
-In this section, you will learn how to use a Tekton pipeline resource and trigger the Pipeline to run. The Pipeline will first clone the git repository source code of the `vote-api` and `vote-ui` repositories. The Pipeline will then build the application and push the image to the internal image registry. We'll also later add a webhook to the `vote-ui` to trigger when a commit is made to the Git repository. Finally, the Pipeline will update the deployment in the `vote-app-gitops` repository with the new image.
+In this section, you will learn how to use a Tekton pipeline resource and trigger the pipeline to run, and you'll be working with two common pipelines in this workshop.
+
+- The first pipeline will clone the git repository source code of the `vote-api` and `vote-ui` repositories. The pipeline will then build the application and push the image to the internal image registry. You may notice there are already triggers in the development projects to notice when a commit is made to the Git repository, and restart the pipeline process automatically. Finally, the pipeline will update the deployment manifests in the `vote-api-gitops` and `vote-ui-gitops` repositories with the new image, and deploy the containers to the development environment.
+- The second pipeline is for when our changes have been applied and tested, and the application is now ready to move from a development to production environment. The image and tag is copied for the application to be managed by Argo CD in a GitOps methodology to then control our cluster through the `vote-api-gitops` and `vote-ui-gitops` repositories scaffolded by Developer Hub in the previous step.
 
 ## Viewing the pipelines
 
-Let's use the OpenShift Console to view the pipelines created for you. Within the *Developer* perspective of the OpenShift Console, click on the *Pipelines* link in the left navigation menu. You can also use link:https://console-openshift-console.%SUBDOMAIN%/dev-pipelines/all-namespaces[*this link*,role='params-link',window='_blank'] to head to the Pipelines page directly.
+From the Developer Hub `vote-api-{user}` component, we can view the native mapping of the Tekton plugin on Developer Hub to the *Pipelines* dashboard within the OpenShift Web Console.
+
+img
+
+NOTE: You can also navigate from the OpenShift Web Console to view the pipelines created for you. Within the *Developer* perspective of the OpenShift Console, click on the *Pipelines* link in the left navigation menu. You can also use link:https://console-openshift-console.%SUBDOMAIN%/dev-pipelines/all-namespaces[*this link*,role='params-link',window='_blank'] to head to the Pipelines page directly.
+
+// Fix the above link
 
 image::switch-perspective.png[]
 
-Here, we will select the `vote-app-ci-%USERID%` project, where the pipelines have been created. This section details all the pipelines we'll be using in the workshop, details about the last pipeline run, the status of the tasks, and more relevant details about the Pipeline. You should see three pipelines, `promote-to-prod`, `vote-app-api-pipeline`, and `vote-app-ui-pipeline`.
+Here, we will be in the `vote-app-dev-{user}` project, where the pipelines have been created. This section details all the pipelines we'll be using in the workshop, two for building the source code and deploying the container images to development, and two for promoting our application from the development to production environment. You can also view details about the last pipeline run, the status of the tasks, and more relevant details about the Pipeline.
 
-image::pipelines-default.png[]
+img
 
-Before we start the pipelines, let's look at one of the pipeline contents. Click on the `vote-app-api-pipeline` pipeline to view the pipeline details. Select *YAML* to view the pipeline definition in link:https://www.redhat.com/en/topics/automation/what-is-yaml[*YAML format*,window='_blank']. You should see the pipeline definition, along with the tasks that are defined in the Pipeline.
+Before we start the pipelines, let's look at one of the pipeline contents. Click on the `vote-api-builda` pipeline to view the pipeline details. Select *YAML* to view the pipeline definition in link:https://www.redhat.com/en/topics/automation/what-is-yaml[*YAML format*,window='_blank']. You should see the pipeline definition, along with the tasks that are defined in the Pipeline.
 
-image::pipeline-yaml.png[]
+img
 
 This Pipeline YAML defines the tasks to be run in the Pipeline and also defines the parameters used in the Pipeline, such as the git repository URL, the image name, and more. 
 
-image::pipeline-yaml-content.png[]
+img
 
-We can also view the pipeline content below. The last YAML definition is a task that helps to bundle multiple actions together, including cloning the git repository, updating image digests, and committing changes.
+NOTE: We can also view the pipeline content below. For redundancy, we'll just be showing the `vote-api` pipeline manifests here. Feel free to explore and view the other `vote-ui` manifests from your environment.
 
-*vote-app-api-pipeline*
+*vote-api-build*
 
 [%collapsible]
 ====
@@ -119,7 +128,7 @@ spec:
 ----
 ====
 
-*vote-app-ui-pipeline*
+*vote-api-promote*
 
 [%collapsible]
 ====
@@ -216,185 +225,13 @@ spec:
 ----
 ====
 
-**promote-to-prod**
+## Building and deploying the backend
 
-[%collapsible]
-====
-[.console-input]
-[source,yaml]
-----
-apiVersion: tekton.dev/v1beta1
-kind: Pipeline
-metadata:
-  name: promote-to-prod
-  namespace: vote-app-ci-%USERID%
-spec:
-  params:
-    - default: 'vote-app-dev-%USERID%/vote-ui:latest'
-      name: SOURCE_IMAGE
-      type: string
-    - default: 'vote-app-prod-%USERID%/vote-ui:prod'
-      name: DEST_IMAGE
-      type: string
-    - default: 'http://gitea.gitea.svc:3000/%USERID%/vote-app-gitops'
-      name: CONFIG_GIT_REPO
-      type: string
-    - default: main
-      name: CONFIG_GIT_REVISION
-      type: string
-    - default: >-
-        image-registry.openshift-image-registry.svc:5000/vote-app-prod-%USERID%/vote-ui
-      name: IMAGE_NAME
-      type: string
-  tasks:
-    - name: tag-to-prod
-      params:
-        - name: SCRIPT
-          value: oc tag $(params.SOURCE_IMAGE) $(params.DEST_IMAGE)
-        - name: VERSION
-          value: latest
-      taskRef:
-        kind: ClusterTask
-        name: openshift-client
-    - name: image-tag-to-digest
-      params:
-        - name: image_dest_url
-          value: $(params.IMAGE_NAME)
-        - name: image_dest_tag
-          value: prod
-      runAfter:
-        - tag-to-prod
-      taskRef:
-        kind: Task
-        name: image-tag-to-digest
-    - name: git-update-deployment
-      params:
-        - name: GIT_REPOSITORY
-          value: $(params.CONFIG_GIT_REPO)
-        - name: GIT_REF
-          value: $(params.CONFIG_GIT_REVISION)
-        - name: CURRENT_IMAGE
-          value: quay.io/bluesman/vote-ui:latest
-        - name: NEW_IMAGE
-          value: $(params.IMAGE_NAME)
-        - name: NEW_DIGEST
-          value: $(tasks.image-tag-to-digest.results.image_digest)
-        - name: KUSTOMIZATION_PATH
-          value: environments/prod
-      runAfter:
-        - image-tag-to-digest
-      taskRef:
-        kind: Task
-        name: git-update-deployment
-      workspaces:
-        - name: workspace
-          workspace: app-source
-  workspaces:
-    - name: app-source
-----
-====
+Let's start these pipelines by using a link:https://tekton.dev/docs/pipelines/pipelineruns/[PipelineRun,window='_blank'], which is a custom resource that allows you to start a pipeline. This PipelineRun will start the `vote-api-build` pipeline, which will build the `vote-api` image from the GitLab source repository, and and push it to the local registry before deploying it to our development environment. If you haven't already, from the *Pipelines* view, select the `vote-api-build` pipeline.
 
-*git-update-deployment-task*
+NOTE: We're doing this step manually, however this would generally be automated as part of a software template in Developer Hub
 
-[%collapsible]
-====
-[.console-input]
-[source,yaml]
-----
-apiVersion: tekton.dev/v1beta1
-kind: Task
-metadata:
-  annotations:
-    tekton.dev/pipelines.minVersion: 0.12.1
-    tekton.dev/tags: git
-  name: git-update-deployment
-  namespace: vote-app-ci-%USERID%
-  labels:
-    app.kubernetes.io/version: '0.2'
-    operator.tekton.dev/provider-type: community
-spec:
-  description: >-
-    This Task can be used to update image digest in a Git repo using kustomize.
-    It requires a secret with credentials for accessing the git repo.
-  params:
-    - name: GIT_REPOSITORY
-      type: string
-    - name: GIT_REF
-      type: string
-    - name: CURRENT_IMAGE
-      type: string
-    - name: NEW_IMAGE
-      type: string
-    - name: NEW_DIGEST
-      type: string
-    - name: KUSTOMIZATION_PATH
-      type: string
-  results:
-    - description: The commit SHA
-      name: commit
-  steps:
-    - image: 'docker.io/alpine/git:v2.26.2'
-      name: git-clone
-      resources: {}
-      script: >
-        rm -rf git-update-digest-workdir
-
-        git clone $(params.GIT_REPOSITORY) -b $(params.GIT_REF)
-        git-update-digest-workdir
-      workingDir: $(workspaces.workspace.path)
-    - image: 'quay.io/wpernath/kustomize-ubi:latest'
-      name: update-digest
-      resources: {}
-      script: >
-        cd git-update-digest-workdir/$(params.KUSTOMIZATION_PATH)
-
-        kustomize edit set image
-        $(params.CURRENT_IMAGE)=$(params.NEW_IMAGE)@$(params.NEW_DIGEST)
-
-
-        echo "##########################"
-
-        echo "### kustomization.yaml ###"
-
-        echo "##########################"
-
-        cat kustomization.yaml
-      workingDir: $(workspaces.workspace.path)
-    - image: 'docker.io/alpine/git:v2.26.2'
-      name: git-commit
-      resources: {}
-      script: |
-        cd git-update-digest-workdir
-
-        git config user.email "tektonbot@redhat.com"
-        git config user.name "My Tekton Bot"
-
-        git status
-        git add $(params.KUSTOMIZATION_PATH)/kustomization.yaml
-        git commit -m "[ci] Image digest updated"
-
-        git push
-
-        RESULT_SHA="$(git rev-parse HEAD | tr -d '\n')"
-        EXIT_CODE="$?"
-        if [ "$EXIT_CODE" != 0 ]
-        then
-          exit $EXIT_CODE
-        fi
-        # Make sure we don't add a trailing newline to the result!
-        echo -n "$RESULT_SHA" > $(results.commit.path)
-      workingDir: $(workspaces.workspace.path)
-  workspaces:
-    - description: The workspace consisting of maven project.
-      name: workspace
-----
-====
-
-## Starting the `vote-app-api` pipeline
-
-Let's start these pipelines by using a link:https://tekton.dev/docs/pipelines/pipelineruns/[PipelineRun,window='_blank'], which is a custom resource that allows you to start a pipeline. This PipelineRun will start the `vote-app-api-pipeline` pipeline, which will build the `vote-api` image, and push it to the local registry. From the *Pipelines* view, select the `vote-app-api-pipeline` pipeline.
-
-image::pipeline-list.png[]
+img
 
 Here, you can review the pipeline steps and see what each step is doing. You can also see the pipeline resources that are being used.
 
@@ -403,67 +240,70 @@ image::pipeline-details.png[]
 For reference, here are the pipeline steps:
 
 - `git-clone`: This step clones the local Git repository that contains the source code for the application. We're able to do so because of a `gitea-gitops` secret that was created for you. This secret contains the username and password to access the Gitea repository.
-- `build-and-push`: This step builds the image and pushes it to the internal OpenShift registry. The image name is passed in as a parameter.
-- `git-update-deployment`: This final step updates the deployment manifests in the Git repository.
+- `build-image`: This step builds the image and pushes it to the internal OpenShift registry. The image name is passed in as a parameter.
+- `resync`: This final step updates the deployment manifests in the Git repository.
 
 Now, let's start the Pipeline. Click on the top-right *Actions* then *Start* button to start the Pipeline.
 
-image::pipeline-start-button.png[]
+img
 
 You will be prompted to enter the values for the pipeline parameters, however the default values are already set for you. This includes the source Git repository, image name to build, and GitOps manifest repository.
 
-image::pipeline-start-params.png[]
+img
 
-You'll still need to select a workspace, so scroll to the bottom of the form, select *Persistent Volume Claim*, and choose the `workspace-api-app-source` PVC. This link:https://kubernetes.io/docs/concepts/storage/persistent-volumes/[Persistent Volume Claim (PVC),window='_blank'] workspace gives us persistent storage that the Pipeline can access even in a containerized environment. Now, click on the *Start* button.
+You'll still need to select a workspace for storage, so scroll to the bottom of the form, select *VolumeClaimTemplate*. This link:https://kubernetes.io/docs/concepts/storage/persistent-volumes/[Volume Claim Template,window='_blank'] gives us persistent storage that the Pipeline can access even in a containerized environment. Now, click on the *Start* button.
 
-image::pipeline-start.png[]
+img
 
-Now that the `vote-app-api` pipeline has been started, we can view it in action from the *PipelineRuns* view. We'll need to wait for this first PipelineRun to finish before we can start the `vote-ui-app-pipeline` pipeline, which should take about 1-2 minutes.
+Now that the `vote-api-build` pipeline has been started, we can view it in action from the *PipelineRuns* view. We'll need to wait for this first PipelineRun to finish before we can start the `vote-ui-app-pipeline` pipeline, which should take about 1-2 minutes, but we can continue on with the workshop.
 
-image::pipelinerun-list-api.png[]
+img
 
-## Starting the `vote-app-ui` pipeline
+In addition, there's a mapping of this same information in Developer Hub, so we wouldn't have to move between contexts in order to see information about this PipelineRun.
 
-With the `vote-app-api-pipeline` PipelineRun completed, we can now start the `vote-ui-app-pipeline` pipeline. Let's repeat the same steps for this other Pipeline, first selecting it from the *Pipelines* view.
+TIP: If you're curious, you can check the *Topology* of the `vote-app-dev-{user}` project to view the backend, it may be created already! We'll soon talk about all the different icons in the topology and what they represent.
 
-image::pipeline-ui-list-dashboard.png[]
+## Building and deploying the frontend
 
-Here, we can go ahead and start the Pipeline. The tasks are essentially the same as the `vote-app-api`, so we can click the top-right *Actions* then *Start* button to start the Pipeline.
+With the `vote-api-build` PipelineRun in action or completed, we can now start the `vote-ui-build` pipeline. Let's repeat the same steps for this other Pipeline, first selecting it from the *Pipelines* view.
 
-image::pipeline-ui-start.png[]
+img
+
+Here, we can go ahead and start the Pipeline. The tasks are essentially the same as the `vote-api-build`, so we can click the top-right *Actions* then *Start* button to start the Pipeline.
+
+img
 
 You'll notice that the only change here is the difference in the source Git repository and image name to build.
 
-image::pipeline-ui-start-params.png[]
+img
 
-Although the default values are already set for you, you'll still need to select a workspace, so select *Persistent Volume Claim* and choose the `workspace-ui-app-source` PVC. Now, click on the *Start* button.
+Although the default values are already set for you, you'll still need to select a workspace for storage, so select *VolumeClaimTemplate*. Now, click on the *Start* button.
 
-image::pipeline-ui-start-2.png[]
+img
 
-Now that the `vote-app-ui` pipeline has been started, let's go ahead and check the status of this Pipeline. We should be at the *PipelineRuns* view, and after a minute or two, the `vote-ui-app-pipeline` PipelineRun should be completed.
-
-image::pipelinerun-finish-ui.png[]
+With the `vote-ui-build` pipeline started, let's go ahead and check the status of this Pipeline. We should be at the *PipelineRuns* view, and after a minute or two, the `vote-ui-app-pipeline` PipelineRun should be completed, or we could view this from Developer Hub.
 
 ## Checking the status of the pipelines
 
 From the *PipelineRuns* section, we can examine various details about the specific PipelineRun, such as the YAML executed, each TaskRun executed, parameters used for the PipelineRun, and logs from each Task.
 
-image::pipelinerun-status.png[]
+img
 
-For example, viewing the logs from the `build-and-push` Task, we can see the output from the _build_ and _push_ actions, which use the link:https://buildah.io/[Buildah,window='_blank'] `bud` command.
+For example, viewing the logs from the `build-image` Task, we can see the output from the _build_ and _push_ actions, which use the link:https://buildah.io/[Buildah,window='_blank'] `bud` command.
 
-image::pipelinerun-logs.png[]
+img
 
 ## Checking the status of the applications
 
-Now that the pipelines have been started let's check the status of the deployments. Click on the *Topology* left-hand tab to see the list of deployments that have been created. We now have a new application called *Triggers* which contains two deployments, one for the `vote-api` and one for the `vote-ui`.
+Now that the pipelines have finished, let's check the status of the deployments. Click on the *Topology* left-hand tab to see the list of deployments that have been created in the `vote-app-dev-{user}` project. We now have a new application called *Triggers* which contains two deployments, one for the `vote-api` and one for the `vote-ui`, which listen for changes in the source repositories to rebuild and redeploy the applications in this environment. More importantly, however, are the two new microservices that have been built and deployed from our source code.
 
-image::deployment-status.png[]
+img
 
-You can click on a deployment to see the details of the deployment, including the pods that are running, which is an event listener, allowing us to trigger a new build of the application when a change is made to the Git repository.
+Feel free to click on a deployment to view the details, including the pods that are running, but the little arrow on the top right of the icon will open the *Route*, in order to view the application in our browser. Select the *Route* of the `vote-ui` (Python icon) to open up the frontend of our application.
 
-image::deployment-details-el.png[]
+img
 
+////
 ## Start `vote-ui` with a Webhook
 
 Tekton supports link:https://tekton.dev/docs/triggers/[Triggers,window='_blank'] to enable automation and webhooks. Now that the `vote-ui` deployment is running, let's add a webhook to the Gitea repository to trigger a new build of the application when changes are made to the repository. From the *Topology* view, click on the `el-eventlistener-ui` deployment. From there, navigate to the *Routes* section and copy the `el-eventlistener-ui` Route URL from the bottom right-hand corner.
@@ -479,10 +319,27 @@ Paste the copied Route URL into the *Target URL* field in the next screen. You c
 image::create-webhook.png[Create Webhook]
 
 Great, now we have a webhook that will trigger a new build of the application when changes are made to the Git repository. Later on in this module, we'll make some changes to the source code using OpenShift Dev Spaces and push the changes to the Git repository to trigger a new build.
+////
+
+## Promoting the applications to production
+
+While these applications are running just fine in the development project, what if we'd like to promote our applications to production? Let's learn how to do this now, as once we make changes to the source code and rebuild our application later, we'll end up promoting the applications to production again. First, return to the *Pipelines* dashboard to view the `vote-api-promote` and `vote-ui-promote` pipelines.
+
+img
+
+Let's start the pipelines, first the `vote-api-promote`. Click on the top-right *Actions* then *Start* button to start the Pipeline.
+
+img
+
+You will be prompted to enter the values for the pipeline parameters, however the default values are already set for you. This includes the source Git repository and details, as well as the Argo CD host to update the image tag.
+
+img
+
+
 
 ## Next Steps
 
-Congratulations! You've successfully deployed the `vote-app` and `vote-api` pipelines using Tekton Pipelines. You've also added a webhook to the `vote-ui` pipeline to trigger a new build when changes are made to the Git repository. Now, let's move on to the next lab to learn how to deploy the application using Argo CD.
+Congratulations! You've successfully deployed the `vote-api` and `vote-ui` to the deployment environment using Tekton Pipelines. Now, let's move on to the next lab to learn how to deploy the application using Argo CD.
 
 ## For later (cedric to fix)
 

@@ -4,17 +4,15 @@
 ** xref:setup.adoc[Setup]
 
 
-* 2. Inner Loop Development
+* 2. Inner & Outer Loop
 ** xref:inner-intro.adoc[Introduction]
 ** xref:developerhub.adoc[Developer Hub]
 ** xref:pipelines.adoc[Pipelines]
-** xref:argocd.adoc[Argo CD]
 ** xref:devspaces.adoc[Dev Spaces]
+** xref:argocd.adoc[Argo CD]
+** xref:production.adoc[Pushing to Production]
 ** xref:finish.adoc[Finish]
 
-* 3. Outer Loop Development
-** xref:production.adoc[Pushing to Production]
-
-* 4. Conclusion
+* 3. Conclusion
 ** xref:finish.adoc[Finish]
 ** xref:resources.adoc[Resources]
