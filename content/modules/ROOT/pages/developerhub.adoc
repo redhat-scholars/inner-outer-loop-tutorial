@@ -63,7 +63,7 @@ image::developer-hub-create.png[Developer Hub Create]
 Here, we can leave everything as it is, the name, description, and cluster to set things up on, and click on the *Next* button. 
 
 TIP: How are these values pre-filled? This is thanks to the 
-link:https://gitlab-gitlab{console_url}/rhdh/inner-outer-loop-templates/-/blob/main/vote-api-go/template.yaml[`template.yaml`,role='params-link',window='_blank'] that defines all of the specifics for the template, pre-registered to Developer Hub.
+link:{gitlab_url}/rhdh/inner-outer-loop-templates/-/blob/main/vote-api-go/template.yaml[`template.yaml`,role='params-link',window='_blank'] that defines all of the specifics for the template, pre-registered to Developer Hub.
 
 image::developer-hub-create-go-api.png[Developer Hub Create Go API]
 
@@ -155,7 +155,7 @@ image::developer-hub-vote-api-dependencies.png[Developer Hub Vote API Dependenci
 
 ## Reviewing the Created Repositories
 
-As part of the component creation process, Developer Hub automatically invokes the GitLab (or whichever Git provider you happen to use) to create the necessary repositories for the backend and frontend components. Within the component overview, you can find the links to the source code repositories for the components, or use this link link:https://gitlab-gitlab{console_url}/{user}/vote-api[here for the vote-api repository,role='params-link',window='_blank'].
+As part of the component creation process, Developer Hub automatically invokes the GitLab (or whichever Git provider you happen to use) to create the necessary repositories for the backend and frontend components. Within the component overview, you can find the links to the source code repositories for the components, or use this link link:{gitlab_url}/{user}/vote-api[here for the vote-api repository,role='params-link',window='_blank'].
 
 image::developer-hub-vote-api-repo.png[Developer Hub Vote API Repo]
 
@@ -163,7 +163,7 @@ In the new page that opened, explore the repository's contents, including the so
 
 image::developer-hub-vote-api-repo-contents.png[Developer Hub Vote API Repo Contents]
 
-In addition to the source code repositories, Developer Hub also creates the corresponding GitOps repositories for each component. These repositories contain the Kubernetes manifests and Helm charts required for deploying the components. You can find this in your user's projects, or use this link link:https://gitlab-gitlab{console_url}/users/{user}/projects[here to navigate to your projects,role='params-link',window='_blank'].
+In addition to the source code repositories, Developer Hub also creates the corresponding GitOps repositories for each component. These repositories contain the Kubernetes manifests and Helm charts required for deploying the components. You can find this in your user's projects, or use this link link:{gitlab_url}/users/{user}/projects[here to navigate to your projects,role='params-link',window='_blank'].
 
 image::developer-hub-vote-gitops-repo.png[Developer Hub Vote API GitOps Repo]
 

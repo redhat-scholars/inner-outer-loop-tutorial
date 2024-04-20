@@ -1,25 +1,21 @@
 # Workshop Development - Pipelines
 
-In this section, you will learn how to use a Tekton pipeline resource and trigger the pipeline to run, and you'll be working with two common pipelines in this workshop.
+In this section, you will learn how to use a Tekton pipeline and trigger the pipeline to run, and you'll be working with two common pipelines in this workshop.
 
 - The first pipeline will clone the git repository source code of the `vote-api` and `vote-ui` repositories. The pipeline will then build the application and push the image to the internal image registry. You may notice there are already triggers in the development projects to notice when a commit is made to the Git repository, and restart the pipeline process automatically. Finally, the pipeline will update the deployment manifests in the `vote-api-gitops` and `vote-ui-gitops` repositories with the new image, and deploy the containers to the development environment.
 - The second pipeline is for when our changes have been applied and tested, and the application is now ready to move from a development to production environment. The image and tag is copied for the application to be managed by Argo CD in a GitOps methodology to then control our cluster through the `vote-api-gitops` and `vote-ui-gitops` repositories scaffolded by Developer Hub in the previous step.
 
 ## Viewing the pipelines
 
-From the Developer Hub `vote-api-{user}` component, we can view the native mapping of the Tekton plugin on Developer Hub to the *Pipelines* dashboard within the OpenShift Web Console.
+Let's navigate from the OpenShift Web Console to view the pipelines created for you during the Developer Hub scaffolding process. Within the *Developer* perspective of the OpenShift Console, click on the *Pipelines* link in the left navigation menu. You can also use link:{console_url}/dev-pipelines/ns/vote-app-dev-{user}[*this link*,role='params-link',window='_blank'] to head to the Pipelines page directly. 
 
-img
+image::openshift-pipelines-dashboard.png[Viewing the OpenShift Pipelines Dashboard]
 
-NOTE: You can also navigate from the OpenShift Web Console to view the pipelines created for you. Within the *Developer* perspective of the OpenShift Console, click on the *Pipelines* link in the left navigation menu. You can also use link:https://console-openshift-console.%SUBDOMAIN%/dev-pipelines/all-namespaces[*this link*,role='params-link',window='_blank'] to head to the Pipelines page directly.
-
-// Fix the above link
-
-image::switch-perspective.png[]
+NOTE: Fom the Developer Hub `vote-api-{user}` component, we can view the native mapping of the Tekton plugin on Developer Hub to the *Pipelines* dashboard within the OpenShift Web Console once Pipelines have been started. This is a great way to see the status of the pipelines and the tasks that are being executed.
 
 Here, we will be in the `vote-app-dev-{user}` project, where the pipelines have been created. This section details all the pipelines we'll be using in the workshop, two for building the source code and deploying the container images to development, and two for promoting our application from the development to production environment. You can also view details about the last pipeline run, the status of the tasks, and more relevant details about the Pipeline.
 
-img
+image::pipelines-dashboard.png[Viewing the Pipelines Dashboard]
 
 Before we start the pipelines, let's look at one of the pipeline contents. Click on the `vote-api-builda` pipeline to view the pipeline details. Select *YAML* to view the pipeline definition in link:https://www.redhat.com/en/topics/automation/what-is-yaml[*YAML format*,window='_blank']. You should see the pipeline definition, along with the tasks that are defined in the Pipeline.
 
@@ -29,7 +25,7 @@ This Pipeline YAML defines the tasks to be run in the Pipeline and also defines 
 
 img
 
-NOTE: We can also view the pipeline content below. For redundancy, we'll just be showing the `vote-api` pipeline manifests here. Feel free to explore and view the other `vote-ui` manifests from your environment.
+NOTE: We can also view the pipeline content below. For redundancy, we'll just be showing the `vote-api` pipeline manifests here. Feel free to explore and view the other `vote-ui` manifests from your environment. Also, these are just for reference, using an example cluster and a `user2`, so the values may differ from what you see in your environment.
 
 *vote-api-build*
 
@@ -38,93 +34,84 @@ NOTE: We can also view the pipeline content below. For redundancy, we'll just be
 [.console-input]
 [source,yaml]
 ----
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
-  name: vote-app-api-pipeline
-  namespace: vote-app-ci-%USERID%
+  name: vote-api-build
+  namespace: vote-app-dev-user2
+  labels:
+    backstage.io/kubernetes-id: vote-api-user2
+    rht-gitops.com/janus-argocd: vote-api-user2-dev-build
+    type: pipeline
 spec:
   params:
-  - name: SOURCE_GIT_URL
-    type: string
-    description: The application git repository url
-    default: 'http://gitea.gitea.svc:3000/%USERID%/pipelines-vote-api'
-  - name: SOURCE_GIT_REVISION
-    type: string
-    default: master
-    description: The application git repository revision
-  - default: image-registry.openshift-image-registry.svc:5000/vote-app-dev-%USERID%/vote-api
-    name: IMAGE_NAME
-    type: string
-  - default: .
-    name: PATH_CONTEXT
-    type: string
-  - default: 'http://gitea.gitea.svc:3000/%USERID%/vote-app-gitops'
-    name: CONFIG_GIT_REPO
-    type: string
-  - default: main
-    name: CONFIG_GIT_REVISION
-    type: string
-
-  workspaces:
-  - name: app-source
-
+    - name: source-repo
+      type: string
+      description: source repo that contains the application code
+      default: 'https://gitlab-gitlab.apps.cluster-wrghk.sandbox2585.opentlc.com/user2/vote-api.git'
+    - name: source-branch
+      type: string
+      description: source branch to build from
+      default: master
+    - name: output-image
+      type: string
+      description: reference of the image that will get created
+      default: 'image-registry.openshift-image-registry.svc:5000/vote-app-dev-user2/vote-api'
+    - name: git-host
+      type: string
+      default: gitlab-gitlab.apps.cluster-wrghk.sandbox2585.opentlc.com
+    - name: git-owner
+      type: string
+      default: user2
+    - name: component-id
+      type: string
+      default: vote-api-user2
+    - name: namespace
+      type: string
+      default: vote-app-dev-user2
+  results:
+    - name: IMAGE_URL
+      value: $(tasks.build-image.results.IMAGE_URL)
+    - name: IMAGE_DIGEST
+      value: $(tasks.build-image.results.IMAGE_DIGEST)
   tasks:
-
-  - name: git-clone
-    taskRef:
-      kind: ClusterTask
-      name: git-clone
-    params:
-    - name: url
-      value: $(params.SOURCE_GIT_URL)
-    - name: revision
-      value: $(params.SOURCE_GIT_REVISION)
-    - name: deleteExisting
-      value: 'true'
-    workspaces:
-    - name: output
-      workspace: app-source
-
-  - name: build-and-push
-    params:
-    - name: IMAGE
-      value: $(params.IMAGE_NAME)
-    - name: TLSVERIFY
-      value: "false"
-    - name: CONTEXT
-      value: $(params.PATH_CONTEXT)
-    runAfter:
-    - git-clone
-    taskRef:
-      kind: ClusterTask
-      name: buildah
-    workspaces:
-    - name: source
-      workspace: app-source
-
-  - name: git-update-deployment
-    params:
-    - name: GIT_REPOSITORY
-      value: $(params.CONFIG_GIT_REPO)
-    - name: CURRENT_IMAGE
-      value: quay.io/bluesman/vote-api:latest
-    - name: NEW_IMAGE
-      value: $(params.IMAGE_NAME)
-    - name: NEW_DIGEST
-      value: $(tasks.build-and-push.results.IMAGE_DIGEST)
-    - name: KUSTOMIZATION_PATH
-      value: environments/dev
-    - name: GIT_REF
-      value: $(params.CONFIG_GIT_REVISION)
-    runAfter:
-      - build-and-push
-    taskRef:
-      kind: Task
-      name: git-update-deployment
-    workspaces:
-    - name: workspace
-      workspace: app-source
+    - name: git-clone
+      taskRef:
+        kind: ClusterTask
+        name: git-clone
+      params:
+        - name: url
+          value: $(params.source-repo)
+        - name: revision
+          value: $(params.source-branch)
+      workspaces:
+        - name: output
+          workspace: source-folder
+    - name: build-image
+      taskRef:
+        kind: ClusterTask
+        name: buildah
+      runAfter:
+        - git-clone
+      params:
+        - name: IMAGE
+          value: $(params.output-image)
+      workspaces:
+        - name: source
+          workspace: source-folder
+    - name: resync
+      taskRef:
+        kind: Task
+        name: resync
+      runAfter:
+        - build-image
+      params:
+        - name: COMPONENT_ID
+          value: $(params.component-id)-dev
+        - name: NAMESPACE
+          value: $(params.namespace)
+  workspaces:
+    - name: source-folder
 ----
 ====
 
@@ -135,93 +122,100 @@ spec:
 [.console-input]
 [source,yaml]
 ----
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
-  name: vote-app-ui-pipeline
-  namespace: vote-app-ci-%USERID%
+  name: vote-api-promote
+  namespace: vote-app-dev-user2
+  labels:
+    backstage.io/kubernetes-id: vote-api-user2
+    rht-gitops.com/janus-argocd: vote-api-user2-dev-build
+    type: pipeline
 spec:
   params:
-  - name: SOURCE_GIT_URL
-    type: string
-    description: The application git repository url
-    default: 'http://gitea.gitea.svc:3000/%USERID%/pipelines-vote-ui'
-  - name: SOURCE_GIT_REVISION
-    type: string
-    default: master
-    description: The application git repository revision
-  - default: image-registry.openshift-image-registry.svc:5000/vote-app-dev-%USERID%/vote-ui
-    name: IMAGE_NAME
-    type: string
-  - default: .
-    name: PATH_CONTEXT
-    type: string
-  - default: 'http://gitea.gitea.svc:3000/%USERID%/vote-app-gitops'
-    name: CONFIG_GIT_REPO
-    type: string
-  - default: main
-    name: CONFIG_GIT_REVISION
-    type: string
-
-  workspaces:
-  - name: app-source
-
+    - name: source-image
+      type: string
+      description: source image to promote
+      default: 'image-registry.openshift-image-registry.svc:5000/vote-app-dev-user2/vote-api'
+    - name: destination-image
+      type: string
+      description: destination image to promote to
+      default: 'image-registry.openshift-image-registry.svc:5000/vote-app-prod-user2/vote-api'
+    - name: source-image-tag
+      type: string
+      default: latest
+    - name: destination-image-tag
+      type: string
+      default: prod
+    - name: namespace
+      type: string
+      default: vote-app-prod-user2
+    - name: git-host
+      type: string
+      description: The hostname of the git instance
+      default: gitlab-gitlab.apps.cluster-wrghk.sandbox2585.opentlc.com
+    - name: git-owner
+      type: string
+      default: user2
+    - name: app-name
+      type: string
+      default: vote-api
+    - name: common-password-secret
+      type: string
+      description: Common password used in demo
+      default: common-password-secret
+    - name: argocd-host
+      type: string
+      description: ArgoCD host
+      default: argocd-server-janus-argocd.apps.cluster-wrghk.sandbox2585.opentlc.com
   tasks:
-
-  - name: git-clone
-    taskRef:
-      kind: ClusterTask
-      name: git-clone
-    params:
-    - name: url
-      value: $(params.SOURCE_GIT_URL)
-    - name: revision
-      value: $(params.SOURCE_GIT_REVISION)
-    - name: deleteExisting
-      value: 'true'
-    workspaces:
-    - name: output
-      workspace: app-source
-
-  - name: build-and-push
-    params:
-    - name: IMAGE
-      value: $(params.IMAGE_NAME)
-    - name: TLSVERIFY
-      value: "false"
-    - name: CONTEXT
-      value: $(params.PATH_CONTEXT)
-    runAfter:
-    - git-clone
-    taskRef:
-      kind: ClusterTask
-      name: buildah
-    workspaces:
-    - name: source
-      workspace: app-source
-
-  - name: git-update-deployment
-    params:
-    - name: GIT_REPOSITORY
-      value: $(params.CONFIG_GIT_REPO)
-    - name: CURRENT_IMAGE
-      value: quay.io/bluesman/vote-ui:latest
-    - name: NEW_IMAGE
-      value: $(params.IMAGE_NAME)
-    - name: NEW_DIGEST
-      value: $(tasks.build-and-push.results.IMAGE_DIGEST)
-    - name: KUSTOMIZATION_PATH
-      value: environments/dev
-    - name: GIT_REF
-      value: $(params.CONFIG_GIT_REVISION)
-    runAfter:
-      - build-and-push
-    taskRef:
-      kind: Task
-      name: git-update-deployment
-    workspaces:
-    - name: workspace
-      workspace: app-source
+    - name: copy-image-tag
+      taskRef:
+        kind: ClusterTask
+        name: skopeo-copy
+      params:
+        - name: srcImageURL
+          value: 'docker://$(params.source-image):$(params.source-image-tag)'
+        - name: destImageURL
+          value: 'docker://$(params.destination-image):$(params.destination-image-tag)'
+        - name: srcTLSverify
+          value: 'false'
+        - name: destTLSverify
+          value: 'false'
+      workspaces:
+        - name: images-url
+          workspace: images-url
+    - name: copy-image-latest
+      taskRef:
+        kind: ClusterTask
+        name: skopeo-copy
+      runAfter:
+        - copy-image-tag
+      params:
+        - name: srcImageURL
+          value: 'docker://$(params.source-image):$(params.source-image-tag)'
+        - name: destImageURL
+          value: 'docker://$(params.destination-image):latest'
+        - name: srcTLSverify
+          value: 'false'
+        - name: destTLSverify
+          value: 'false'
+      workspaces:
+        - name: images-url
+          workspace: images-url
+    - name: resync
+      taskRef:
+        kind: Task
+        name: resync
+      runAfter:
+        - copy-image-latest
+      params:
+        - name: COMPONENT_ID
+          value: $(params.app-name)-$(params.git-owner)-prod
+        - name: NAMESPACE
+          value: $(params.namespace)
+  workspaces:
+    - name: images-url
 ----
 ====
 
@@ -239,9 +233,9 @@ image::pipeline-details.png[]
 
 For reference, here are the pipeline steps:
 
-- `git-clone`: This step clones the local Git repository that contains the source code for the application. We're able to do so because of a `gitlab-gitops` secret that was created for you. This secret contains the username and password to access the GitLab repository.
-- `build-image`: This step builds the image and pushes it to the internal OpenShift registry. The image name is passed in as a parameter.
-- `resync`: This final step updates the deployment manifests in the Git repository.
+- `git-clone`: This step clones the remote Git repository that contains the source code for the application. It uses the `source-repo` and `source-branch` parameters to determine which repository and branch to clone.
+- `build-image`: This step builds the image and pushes it to the internal OpenShift registry. The image name is passed in as the `output-image` parameter.
+- `resync`: This final step updates the Kubernetes manifests in the GitOps repository to reflect the newly built image.
 
 Now, let's start the Pipeline. Click on the top-right *Actions* then *Start* button to start the Pipeline.
 
