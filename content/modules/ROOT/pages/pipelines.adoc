@@ -9,21 +9,19 @@ In this section, you will learn how to use a Tekton pipeline and trigger the pip
 
 Let's navigate from the OpenShift Web Console to view the pipelines created for you during the Developer Hub scaffolding process. Within the *Developer* perspective of the OpenShift Console, click on the *Pipelines* link in the left navigation menu. You can also use link:{console_url}/dev-pipelines/ns/vote-app-dev-{user}[*this link*,role='params-link',window='_blank'] to head to the Pipelines page directly. 
 
-image::openshift-pipelines-dashboard.png[Viewing the OpenShift Pipelines Dashboard]
-
 NOTE: Fom the Developer Hub `vote-api-{user}` component, we can view the native mapping of the Tekton plugin on Developer Hub to the *Pipelines* dashboard within the OpenShift Web Console once Pipelines have been started. This is a great way to see the status of the pipelines and the tasks that are being executed.
 
 Here, we will be in the `vote-app-dev-{user}` project, where the pipelines have been created. This section details all the pipelines we'll be using in the workshop, two for building the source code and deploying the container images to development, and two for promoting our application from the development to production environment. You can also view details about the last pipeline run, the status of the tasks, and more relevant details about the Pipeline.
 
-image::pipelines-dashboard.png[Viewing the Pipelines Dashboard]
+image::openshift-pipelines-dashboard.png[Viewing the OpenShift Pipelines Dashboard]
 
-Before we start the pipelines, let's look at one of the pipeline contents. Click on the `vote-api-builda` pipeline to view the pipeline details. Select *YAML* to view the pipeline definition in link:https://www.redhat.com/en/topics/automation/what-is-yaml[*YAML format*,window='_blank']. You should see the pipeline definition, along with the tasks that are defined in the Pipeline.
+Before we start the pipelines, let's look at one of the pipeline contents. Click on the `vote-api-build` pipeline to view the pipeline details, including the tasks that are executed, the parameters used, and the resources that are created.
 
-img
+image::openshift-pipeline-details.png[Viewing the Pipeline Details]
 
-This Pipeline YAML defines the tasks to be run in the Pipeline and also defines the parameters used in the Pipeline, such as the git repository URL, the image name, and more. 
+Select *YAML* to view the pipeline definition in link:https://www.redhat.com/en/topics/automation/what-is-yaml[*YAML format*,window='_blank']. This Pipeline YAML defines the tasks to be run in the Pipeline and also defines the parameters used in the Pipeline, such as the git repository URL, the image name, and more. 
 
-img
+image::openshift-pipeline-yaml.png[Viewing the Pipeline YAML]
 
 NOTE: We can also view the pipeline content below. For redundancy, we'll just be showing the `vote-api` pipeline manifests here. Feel free to explore and view the other `vote-ui` manifests from your environment. Also, these are just for reference, using an example cluster and a `user2`, so the values may differ from what you see in your environment.
 
@@ -225,11 +223,7 @@ Let's start these pipelines by using a link:https://tekton.dev/docs/pipelines/pi
 
 NOTE: We're doing this step manually, however this would generally be automated as part of a software template in Developer Hub
 
-img
-
-Here, you can review the pipeline steps and see what each step is doing. You can also see the pipeline resources that are being used.
-
-image::pipeline-details.png[]
+image::openshiftpipeline-vote-api.png[Selecting the Vote API Pipeline]
 
 For reference, here are the pipeline steps:
 
@@ -239,21 +233,23 @@ For reference, here are the pipeline steps:
 
 Now, let's start the Pipeline. Click on the top-right *Actions* then *Start* button to start the Pipeline.
 
-img
+image::openshift-start-pipeline.png[Starting the Pipeline]
 
 You will be prompted to enter the values for the pipeline parameters, however the default values are already set for you. This includes the source Git repository, image name to build, and GitOps manifest repository.
 
-img
+image::openshift-pipeline-parameters.png[Pipeline Parameters]
 
 You'll still need to select a workspace for storage, so scroll to the bottom of the form, select *VolumeClaimTemplate*. This link:https://kubernetes.io/docs/concepts/storage/persistent-volumes/[Volume Claim Template,window='_blank'] gives us persistent storage that the Pipeline can access even in a containerized environment. Now, click on the *Start* button.
 
-img
+image::openshift-start-pipeline-2.png[Starting the Pipeline]
 
-Now that the `vote-api-build` pipeline has been started, we can view it in action from the *PipelineRuns* view. We'll need to wait for this first PipelineRun to finish before we can start the `vote-ui-app-pipeline` pipeline, which should take about 1-2 minutes, but we can continue on with the workshop.
+Now that the `vote-api-build` pipeline has been started, we can view it in action from the *PipelineRuns* view. We'll need to wait for this first PipelineRun to finish before we can start the `vote-ui-app-pipeline` pipeline, which should take about 1-2 minutes, but we can continue on with the workshop. Feel free to select the running task to view logs.
 
-img
+image::openshift-pipelinerun.png[Viewing the PipelineRun]
 
 In addition, there's a mapping of this same information in Developer Hub, so we wouldn't have to move between contexts in order to see information about this PipelineRun.
+
+image::developer-hub-vote-api-pipeline.png[Developer Hub Vote API Pipeline]
 
 TIP: If you're curious, you can check the *Topology* of the `vote-app-dev-{user}` project to view the backend, it may be created already! We'll soon talk about all the different icons in the topology and what they represent.
 
@@ -261,41 +257,45 @@ TIP: If you're curious, you can check the *Topology* of the `vote-app-dev-{user}
 
 With the `vote-api-build` PipelineRun in action or completed, we can now start the `vote-ui-build` pipeline. Let's repeat the same steps for this other Pipeline, first selecting it from the *Pipelines* view.
 
-img
+image::openshiftpipeline-vote-ui.png[Selecting the Vote UI Pipeline]
 
 Here, we can go ahead and start the Pipeline. The tasks are essentially the same as the `vote-api-build`, so we can click the top-right *Actions* then *Start* button to start the Pipeline.
 
-img
+image::openshift-start-pipeline-3.png[Starting the Pipeline]
 
 You'll notice that the only change here is the difference in the source Git repository and image name to build.
 
-img
+image::openshift-pipeline-parameters-2.png[Pipeline Parameters]
 
 Although the default values are already set for you, you'll still need to select a workspace for storage, so select *VolumeClaimTemplate*. Now, click on the *Start* button.
 
-img
+image::openshift-start-pipeline-4.png[Starting the Pipeline]
 
 With the `vote-ui-build` pipeline started, let's go ahead and check the status of this Pipeline. We should be at the *PipelineRuns* view, and after a minute or two, the `vote-ui-app-pipeline` PipelineRun should be completed, or we could view this from Developer Hub.
+
+image::developer-hub-vote-ui-pipeline.png[Developer Hub Vote UI Pipeline]
 
 ### Checking the status of the pipelines
 
 From the *PipelineRuns* section, we can examine various details about the specific PipelineRun, such as the YAML executed, each TaskRun executed, parameters used for the PipelineRun, and logs from each Task.
 
-img
-
 For example, viewing the logs from the `build-image` Task, we can see the output from the _build_ and _push_ actions, which use the link:https://buildah.io/[Buildah,window='_blank'] `bud` command.
 
-img
+image::openshift-pipelinerun-logs.png[Viewing the PipelineRun Logs]
 
 ### Checking the status of the applications
 
 Now that the pipelines have finished, let's check the status of the deployments. Click on the *Topology* left-hand tab to see the list of deployments that have been created in the `vote-app-dev-{user}` project. We now have a new application called *Triggers* which contains two deployments, one for the `vote-api` and one for the `vote-ui`, which listen for changes in the source repositories to rebuild and redeploy the applications in this environment. More importantly, however, are the two new microservices that have been built and deployed from our source code.
 
-img
+image::openshift-topology-after-pipeline-build.png[Viewing the OpenShift Topology]
 
-Feel free to click on a deployment to view the details, including the pods that are running, but the little arrow on the top right of the icon will open the *Route*, in order to view the application in our browser. Select the *Route* of the `vote-ui` (Python icon) to open up the frontend of our application.
+Feel free to click on a deployment to view the details, including the pods that are running, but the little arrow on the top right of the icon will open the *Route*, in order to view the application in our browser, or within the *Resources* page of the deployment. Select the *Route* of the `vote-ui` (Python icon) to open up the frontend of our application.
 
-img
+image::openshift-route-vote-ui.png[Viewing the Vote UI Route]
+
+As expected, the application is now running and accessible from the browser, and we can start making votes to influence the results of the poll. We'll see how to view the results here shortly.
+
+image::vote-ui-app.png[Vote UI Application]
 
 ////
 ## Start `vote-ui` with a Webhook
