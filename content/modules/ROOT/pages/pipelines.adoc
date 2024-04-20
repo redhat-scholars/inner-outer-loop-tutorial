@@ -271,7 +271,7 @@ Although the default values are already set for you, you'll still need to select
 
 image::openshift-start-pipeline-4.png[Starting the Pipeline]
 
-With the `vote-ui-build` pipeline started, let's go ahead and check the status of this Pipeline. We should be at the *PipelineRuns* view, and after a minute or two, the `vote-ui-app-pipeline` PipelineRun should be completed, or we could view this from Developer Hub.
+With the `vote-ui-build` pipeline started, let's go ahead and check the status of this Pipeline. We should be at the *PipelineRuns* view, and after a minute or two, the `vote-api-build` PipelineRun should be completed, or we could view this from Developer Hub.
 
 image::developer-hub-vote-ui-pipeline.png[Developer Hub Vote UI Pipeline]
 
@@ -319,15 +319,15 @@ Great, now we have a webhook that will trigger a new build of the application wh
 
 While these applications are running just fine in the development project, what if we'd like to promote our applications to production? Let's learn how to do this now, as once we make changes to the source code and rebuild our application later, we'll end up promoting the applications to production again. First, return to the *Pipelines* dashboard to view the `vote-api-promote` and `vote-ui-promote` pipelines.
 
-img
+image::openshift-pipelines-dashboard-2.png[Viewing the OpenShift Pipelines Dashboard]
 
 Let's start the pipelines, first the `vote-api-promote`. Click on the top-right *Actions* then *Start* button to start the Pipeline.
 
-img
+image::openshift-start-pipeline-5.png[Starting the Pipeline]
 
 You will be prompted to enter the values for the pipeline parameters, however the default values are already set for you. This includes the source Git repository and details, as well as the Argo CD host to update the image tag. Hit the *Start* button again to kick off the process.
 
-img
+image::openshift-pipeline-parameters-3.png[Pipeline Parameters]
 
 As the end goal of our workshop is to bring our application into production, please repeat the same steps we've just done for the `vote-ui-promote`, the steps will be the same. When finished, we can take a look at the final result in the OpenShift topology and on the Developer Hub, and proceed to work from the initial project creation.
 
@@ -335,15 +335,11 @@ As the end goal of our workshop is to bring our application into production, ple
 
 Now that the pipelines have finished moving our application from development to production, let's check the status of the deployments. Click on the *Topology* left-hand tab to see the list of deployments that have been created in the `vote-app-prod-{user}` project.
 
-img
+image::openshift-topology-after-pipeline-build-2.png[Viewing the OpenShift Topology]
 
-Here, we can just see both of the microservices deployed in our production environment.
+Here, we can just see both of the microservices deployed in our production environment. In addition, from either the `vote-api` or `vote-ui` components in Developer Hub, we can view the *Topology* plugin to view all instances of the component in our cluster, both in the development and production environment.
 
-img
-
-In addition, from either the `vote-api` or `vote-ui` components in Developer Hub, we can view the *Topology* plugin to view all instances of the component in our cluster, both in the development and production environment.
-
-img
+image::developer-hub-vote-api-topology-prod.png[Developer Hub Vote API Topology]
 
 ## Next Steps
 
