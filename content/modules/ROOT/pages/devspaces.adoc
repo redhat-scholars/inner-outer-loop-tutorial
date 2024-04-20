@@ -62,7 +62,7 @@ Dev Spaces also provides a built-in version control system. This allows you to c
 
 image::devspaces-git.png[Dev Spaces Git]
 
-## Editing the Vote Application in Dev Spaces
+## Testing the Vote Application API in Dev Spaces
 
 ### Installing the application dependencies
 
@@ -70,9 +70,25 @@ Let's first set up the dependencies for our application and run the Vote Applica
 
 image::devspaces-run-task.png[Dev Spaces Run Task]
 
-We can select *Show all tasks* and *devfile: Install dependencies* from here. This will install the necessary Python dependencies for the Vote Application.
+We can select *Show all tasks* and *devfile: Run API* from here. This will install the necessary dependencies for the Vote Application API and run the application in development.
 
 image::devspaces-run-task-2.png[Dev Spaces Run Task]
+
+Now, we're running the API and can view the different endpoints available. We can click on the *Open in New Tab* button to open the Vote Application API in a new browser tab.
+
+image::devspaces-run-task-browser.png[Dev Spaces Run Task Browser]
+
+From the various endpoints shown in the Terminal, we can check out the `/vote` endpoint to see the different options available for the Vote Application.
+
+TIP: You will need to append the beginning of the URL to http instead of https to view the API in the browser.
+
+image::devspaces-run-task-browser-1.png[Dev Spaces Run Task Browser]
+
+When returning to the Dev Spaces interface, we can see the Vote Application API running in the terminal, and the GET requests to the `/vote` endpoint.
+
+image::devspaces-run-task-browser-2.png[Dev Spaces Run Task Browser]
+
+## Developing the Vote Application UI in Dev Spaces
 
 Next, we can select *Terminal* and then *Run Task* again. We can select *Show all tasks* and *devfile: Run Python App* from here. This will run the Vote Application in development.
 
