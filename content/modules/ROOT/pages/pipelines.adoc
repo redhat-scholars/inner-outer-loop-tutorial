@@ -1,4 +1,4 @@
-# Workshop Development - Pipelines
+# Managing and using CI Pipelines
 
 In this section, you will learn how to use a Tekton pipeline and trigger the pipeline to run, and you'll be working with two common pipelines in this workshop.
 

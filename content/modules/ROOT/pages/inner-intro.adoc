@@ -1,4 +1,4 @@
-# Inner Loop Development - Introduction
+# An Introduction to the Workshop Today
 
 In this module, we'll perform several steps during the inner loop development phase of the Vote App deployment.
 
