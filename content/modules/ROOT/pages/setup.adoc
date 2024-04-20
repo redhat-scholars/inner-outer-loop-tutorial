@@ -90,7 +90,7 @@ image::webterminal-operator-details.png[Web Terminal Details]
 
 ### OpenShift Web Console
 
-First, let's ensure we're logged into the *OpenShift* cluster through the Web Console. You can access the OpenShift Console from the lab's start page, or you can visit the OpenShift Console using this link:https://console-openshift-console{console_url}[*OpenShift Web Console Link*,role='params-link',window='_blank']. Here, select the `rhsso` option to use the Red Hat Single Sign-On (SSO) identity provider.
+First, let's ensure we're logged into the *OpenShift* cluster through the Web Console. You can access the OpenShift Console from the lab's start page, or you can visit the OpenShift Console using this link:{console_url}[*OpenShift Web Console Link*,role='params-link',window='_blank']. Here, select the `rhsso` option to use the Red Hat Single Sign-On (SSO) identity provider.
 
 image::openshift-login-options.png[OpenShift Page Login]
 
@@ -111,7 +111,7 @@ image::developer-perspective.png[Developer Perspective]
 
 ### Developer Hub
 
-Let's also view the process of accessing the *Developer Hub*. You can access the Developer Hub dashboard either from the the OpenShift Web Console app launcher, or you can visit the Developer Hub Console using this link: https://backstage-backstage{console_url}[*Developer Hub Dashboard*,role='params-link',window='_blank']. 
+Let's also view the process of accessing the *Developer Hub*. You can access the Developer Hub dashboard either from the the OpenShift Web Console app launcher, or you can visit the Developer Hub Console using this link:{rhdh_url}[*Developer Hub Dashboard*,role='params-link',window='_blank']. 
 
 image::developer-hub-login.png[Developer Hub Perspective]
 
@@ -149,7 +149,7 @@ image::argocd.png[Argo CD]
 
 ### GitLab Instance
 
-You can access GitLab from the lab's start page, or you can visit GitLab using this link:https://gitlab-gitlab{console_url}[*GitLab Link*,role='params-link',window='_blank']. Once Developer Hub is used to create the backend and frotend component repositories, both the source code repositories and GitOps manifests will be visible in GitLab.
+You can access GitLab from the lab's start page, or you can visit GitLab using this link:{gitlab_url}[*GitLab Link*,role='params-link',window='_blank']. Once Developer Hub is used to create the backend and frotend component repositories, both the source code repositories and GitOps manifests will be visible in GitLab.
 
 You may already be signed into GitLab if you've already signed into Developer Hub (which uses GitLab as a identity provider). As a reference, here are your credentials:
 
