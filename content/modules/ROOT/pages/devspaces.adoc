@@ -192,7 +192,14 @@ You will be prompted to enter the values for the pipeline parameters, however th
 
 image::openshift-web-console-pipelines-prod-start-2.png[Developer Hub Pipelines Start]
 
+When this PipelineRun finishes up, our changes made in development will now be reflected in our production environment, and can be viewied from the *Topology* view in the `vote-app-dev-{user}` project.
+
+image::openshift-web-console-topology-prod.png[Developer Hub Topology]
+
+After opening the frontend in the browser through the *Route*, we can also check out the results of the votes through the `/result` endpoint.
+
+image::openshift-web-console-topology-prod-2.png[Developer Hub Topology]
 
 ## Next steps
 
-In this lab, we've made changes to the Vote Application frontend in Dev Spaces, and pushed these changes to the Git repository. We've also seen how the pipelines are triggered to rebuild the `vote-ui` application image, and how Argo CD automatically syncs these changes to the `vote-app-dev-{user}` project. In the next lab, we'll deploy the Vote Application to the `vote-app-stage-{user}` staging project, and test the application in a production-like environment.
+In this section, we've successfully deployed the Vote Application to the `vote-app-dev-{user}` development project, and made changes to the frontend of the application using OpenShift Dev Spaces. We've tested our changes in development, and promoted our changes to the production environment. We've also learned about the powerful features of cloud native development using Dev Spaces with VSCode, such as extension support, terminal support, and Git support.
