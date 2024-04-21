@@ -16,9 +16,9 @@ asciidoc:
     ssh_password: devops
     ssh_command: ssh devops@bastion.{guid}.example.opentlc.com
     page-links:
+    - url: https://developers.redhat.com/rhdh/overview
+      text: Red Hat Developer Hub
     - url: https://www.redhat.com/en/technologies/cloud-computing/openshift/pipelines
       text: OpenShift Pipelines
     - url: https://www.redhat.com/en/technologies/cloud-computing/openshift/gitops
       text: OpenShift GitOps
-    - url: https://developers.redhat.com/rhdh/overview
-      text: Red Hat Developer Hub

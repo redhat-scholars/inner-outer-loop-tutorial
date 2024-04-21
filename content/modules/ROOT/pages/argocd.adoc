@@ -1,6 +1,147 @@
-# Workshop Development - Argo CD
+# Continuous Deployment with Argo CD
 
-The next step is to deploy the Vote App to the `vote-app-dev-%USERID%` environment using Argo CD. This will allow us to view the application before it reaches production and make necessary changes throughout our development flow. We'll also use the OpenShift Web Terminal to scale up the replicas for one of the deployments and learn how to use Argo CD to manage application drifts and syncing.
+With the Vote Application deployed to both the development and production environments, we can now explore how link:https://argo-cd.readthedocs.io/en/stable/[*Argo CD*,window='_blank'] manages our application deployment and synchronization. Argo CD follows the GitOps pattern of using Git repositories as the source of truth for defining the desired application state. When a Git repository is updated with new changes, Argo CD automatically synchronizes these changes and deploys them to the corresponding Kubernetes cluster. In this section, we will demonstrate how Argo CD maintains consistency between the desired state defined in the Git repository and the actual state of the application running in the cluster.
+
+image::argocd-diagram.png[Argo CD]
+
+## Managing the Vote Application in Argo CD
+
+Let's easily view and access Argo CD by navigating to Developer Hub, selecting the `vote-ui-{user}` component, where we can easily view the different Argo CD applications associated with this specific component, as well as their sync status and health. Let's select the `vote-ui-{user}-dev` application to begin with.
+
+image::argocd-overview-rhdh.png[Argo CD in Developer Hub]
+
+From here, we can view details such as the Repo Url, Path, and more, but let's select *Open Argo CD Dashboard* to view the application in the Argo CD dashboard.
+
+image::argocd-dev-hub.png[Argo CD in Developer Hub]
+
+You'll be logging in with the `admin` username, but your same password at the Argo CD login page. As a reminder, here are your credentials:
+
+- Username: `admin`
+- Password: `{password}`
+
+image::argocd-login.png[Argo CD Login]
+
+In the Argo CD dashboard, you'll automatically be redirected to the `vote-ui-{user}-dev` application. The application details page provides an overview of the application's deployment status, including the sync status, health, and resource status. You can also see the application's deployment history and the associated Git repository.
+
+image::argocd-app-details.png[Argo CD Application Details]
+
+### Scaling the Application
+
+Let's explore how Argo CD handles manual changes made directly to the application running in the cluster. In this example, we will attempt to scale the application to three replicas using the OpenShift Web Console.
+
+Firstly, navigate to the OpenShift Web Console's *Topology* view and select the`vote-app-dev-{user}` project where the Vote Application is deployed in the development environment.
+
+image::openshift-argocd-topology.png[OpenShift Topology]
+
+Select the `vote-ui` deployment as an example, and on the *Details* page, scale the Pods to 3 replicas.
+
+image::openshift-scale-replicas.png[Scale Replicas]
+
+After you notice the deployment has been scaled up, return to the Argo CD dashboard. You'll see that the application is now marked as _"OutOfSync"_ because the actual state of the application in the cluster differs from the desired state defined in the Git repository.
+
+image::argocd-out-of-sync.png[Argo CD Out of Sync]
+
+### Synchronizing the Application in Development
+
+To bring the application back in sync with the desired state defined in the Git repository, we need to perform a manual synchronization using Argo CD. In the Argo CD dashboard, click on the *SYNC* button for the vote-app application.
+
+image::argocd-sync-button.png[Argo CD Sync Button]
+
+Review the synchronization options, although you don't need to adjust anything, and click on SYNCHRONIZE to initiate the synchronization process.
+
+image::argocd-sync-options.png[Argo CD Sync Options]
+
+Argo CD will now synchronize the application by reverting the manual changes made in the cluster and aligning the application's state with the desired state defined in the Git repository. After the synchronization is complete, the application will be marked as "Synced" and "Healthy" in Argo CD.
+
+image::argocd-synced.png[Argo CD Synced]
+
+TIP: If you happen to view the OpenShift Web Console *Topology*, you'll notice that the application has been scaled back to the desired state of one replica.
+
+### Reviewing Self-Healing Configuration
+
+Argo CD provides a self-healing feature that automatically reverts any manual changes made directly to the application in the cluster. This ensures that the desired state defined in the Git repository is always maintained. To review the self-healing configuration for the Vote Application, navigate to the application details page in Argo CD. Let's click on the *APP DETAILS* tab and scroll down to the Sync Policy section.
+
+image::argocd-sync-policy.png[Argo CD Sync Policy]
+
+Here, you can see that the selfHeal option is disabled for the development environment (`vote-app-dev-{user}`) but after navigating to the Argo CD application `vote-ui-{user}-prod`, it is enabled for the production environment (`vote-app-prod-{user}`).
+
+image::argocd-self-heal-on.png[Argo CD Self-Heal]
+
+The self-healing configuration is defined in the application's GitOps repository, which you can view by navigating to the `vote-ui-gitops` repository in GitLab.
+
+Open the `argocd/vote-ui-user1-argocd-app-prod.yaml` file and locate the `selfHeal` configuration at the bottom.
+
+[source,texinfo,subs="attributes"]
+----
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+----
+
+This configuration ensures that any manual changes made to the application in the development environment will be allowed, and manual changes in the production environment will be automatically reverted by Argo CD.
+
+### Viewing Self-Healing in Action
+
+To demonstrate the self-healing feature, let's attempt to scale the `vote-ui` deployment to three replicas again using the OpenShift Web Console *Topology* view, in the `vote-app-prod-{user}` project. Here, try to increase the number of replicas to 3.
+
+image::openshift-scale-replicas-to-3.png[Scale Replicas]
+
+After scaling the deployment, you'll notice that any manual changes are reversed, and new pods are terminated. 
+
+image::argocd-self-heal-terminate.png[Argo CD Self-Heal]
+
+Instantly in the background, Argo CD will automatically detect the manual changes made to the application and initiate a synchronization process to revert the deployment to the desired state defined in the Git repository.
+
+image::argocd-self-heal-sync.png[Argo CD Self-Heal Sync]
+
+## Scaling the Application using GitOps
+
+To scale the application using the GitOps approach, we need to make changes to the application's configuration in the Git repository.
+
+Navigate to the GitOps repository in GitLab and open the app/templates/vote-api/deployment.yaml file.
+
+Modify the spec.replicas field to the desired number of replicas (e.g., 5).
+
+[source,yaml]
+spec: replicas: 5
+Commit the changes and create a new merge request targeting the appropriate branch (e.g., main).
+
+image::gitlab-merge-request.png[GitLab Merge Request]
+
+Review the merge request and click on Merge to merge the changes into the target branch.
+
+image::gitlab-merge-changes.png[GitLab Merge Changes]
+
+Once the merge request is merged, Argo CD will automatically detect the changes in the Git repository and trigger a synchronization process.
+
+Navigate to the Argo CD dashboard and observe the synchronization process. Argo CD will update the application's deployment to match the desired state defined in the Git repository.
+
+After the synchronization is complete, the application will be scaled to the specified number of replicas (e.g., 5).
+
+image::argocd-scaled.png[Argo CD Scaled]
+
+Congratulations! You have successfully explored the GitOps workflow using Argo CD. You learned how to view the application's state in Argo CD, handle manual changes, synchronize the application, review self-healing configuration, and scale the application using the GitOps approach.
+
+Argo CD ensures that the desired state of your application is always maintained, providing a consistent and reliable deployment process. By leveraging GitOps principles, you can declaratively manage your application's configuration and enjoy the benefits of automated deployments and easy rollbacks.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Creating a new application using Argo CD
 
