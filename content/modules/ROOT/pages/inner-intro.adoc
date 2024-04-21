@@ -1,6 +1,6 @@
 # An Introduction to the Workshop Today
 
-In this module, we'll perform several steps during the inner loop development phase of the Vote App deployment.
+In this module, we'll perform several steps during the inner and outer loop development phase of the Vote App deployment.
 
 ## Module Flow
 
@@ -15,4 +15,4 @@ In this module, we'll perform several steps during the inner loop development ph
 
 ## Next Steps 
 
-In the next few exercises, we'll focus on the inner loop development process, which involves making changes to the application code, testing them locally, and pushing the changes to trigger the CI/CD pipeline. We'll learn how the Developer Hub, OpenShift Pipelines, and OpenShift Dev Spaces work together to streamline this process. Let's get started!
+Let's start by exploring the Developer Hub and creating the backend and frontend components using software templates.

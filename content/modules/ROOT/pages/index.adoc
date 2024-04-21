@@ -1,4 +1,4 @@
-# Workshop Overview - Introduction
+# Welcome to the Workshop!
 
 Welcome to the *OpenShift Inner and Outer Loop Development* workshop. We're glad to have you here with us at https://www.redhat.com/en/summit[*Red Hat Summit*] 2024!
 

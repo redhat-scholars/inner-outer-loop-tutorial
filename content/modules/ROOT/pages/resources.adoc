@@ -1,10 +1,10 @@
-# Workshop Conclusion - Resources
+# Thank You & Handy Resources
 
 Thank you once again for participating in the *OpenShift Inner and Outer Loop Development* workshop! As you continue to explore and apply the concepts and tools learned in this lab, we would like to provide you with some valuable resources that will support your ongoing GitOps journey and help you gain a deeper understanding of OpenShift, Tekton, Argo CD, and OpenShift Dev Spaces.
 
 ## Red Hat Developer Resources
 
-- link:https://developers.redhat.com/e-books/gitops-cookbook[GitOps Cookbook eBook,window='_blank']
+- link:https://developers.redhat.com/e-books/gitops-cookbook[GitOps Cookbook eBook written by our very own _Natale Vinto_,window='_blank']
 
 image::gitops-cookbook.png[GitOps Cookbook]
 

@@ -1,4 +1,4 @@
-# Workshop Overview - Setup
+# Setup and Overview of the Workshop Environment
 
 In this section, we'll look at the setup of the link:https://www.redhat.com/en/technologies/cloud-computing/openshift[OpenShift] cluster we're using for today's lab. This includes link:https://developers.redhat.com/rhdh/overview[Developer Hub] and the link:https://www.redhat.com/en/technologies/cloud-computing/openshift/what-are-openshift-operators[OpenShift Operators] that have been installed, as well as the projects that have been created for you. We'll look at the operators we'll be using throughout the lab, including link:https://developers.redhat.com/products/openshift-dev-spaces/overview[OpenShift Dev Spaces], link:https://www.redhat.com/en/technologies/cloud-computing/openshift/pipelines[OpenShift Pipelines], and link:https://www.redhat.com/en/technologies/cloud-computing/openshift/gitops[OpenShift GitOps].
 

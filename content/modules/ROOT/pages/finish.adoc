@@ -1,12 +1,18 @@
-# Workshop Development - Finish
+# Wrapping things up
 
-Congratulations on completing the first half of the lab! You have successfully deployed the Vote App to OpenShift using Tekton pipelines and Argo CD. You have also learned how to use OpenShift Dev Spaces to develop cloud-native applications and make changes locally in real-time. Thus far, you have:
+Congratulations on completing the workshop! You have successfully deployed the Vote Application to OpenShift using Developer Hub, Tekton pipelines, and Argo CD. You have also learned how to use OpenShift Dev Spaces to develop cloud-native applications and make changes in real-time.
 
-- Set up a GitOps workflow using OpenShift, Tekton, and Argo CD.
-- Deploy applications using Tekton pipelines and synchronized environments with Argo CD.
-- Utilized OpenShift Dev Spaces to develop and test our application.
-- Manage application drifts and synchronization with Argo CD.
+Thus far, you have:
+
+- Explored the Developer Hub and discovered the catalog and software templates.
+- Used Developer Hub to setup a GitOps workflow using OpenShift, Tekton, and Argo CD.
+- Deployed the Vote Application using the backend and frontend software templates.
+- Manually triggered pipelines to build and deploy the applications, and move from one environment to another.
+- Utilized OpenShift Dev Spaces to develop and test the application.
+- Learned how Argo CD manages application deployments and synchronization.
+- Explored the self-healing capabilities of Argo CD and how it maintains consistency between the desired state and the actual state of the application.
+- Scaled the application using the GitOps approach by modifying the configuration in the Git repository.
 
 ## Next Steps
 
-The remainder of the lab will focus on GitOps and how to use Argo CD to synchronize environments with high availability. You will also learn how to use Argo CD to manage application drifts. Let's begin!
+Please feel free to continue to learn about several resources that can help you further explore the topics covered in this workshop on the following page.
