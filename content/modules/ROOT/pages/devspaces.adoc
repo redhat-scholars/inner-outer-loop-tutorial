@@ -14,7 +14,7 @@ This will open up the Dev Spaces interface. You'll need to first log in with `rh
 
 image::devspaces-login.png[Dev Spaces Login]
 
-NOTE: In the background, the provisioning of this development environment is happening. This is thanks to the `devfile`link:https://devfile.io/[`devfile`,window='_blank'] that we've defined in our `vote-api` and `vote-ui` application repository, which defines the necessary components and commands to get to coding right away!
+NOTE: In the background, the provisioning of this development environment is happening. This is thanks to the link:https://devfile.io/[`devfile`,window='_blank'] that we've defined in our `vote-api` and `vote-ui` application repository, which defines the necessary components and commands to get to coding right away!
 
 Once the Dev Spaces interface opens, we'll have to hit *Trust Workspace & Install* and *Yes, I trust the authors* to install the required components and enable permissions needed for this lab.
 
@@ -66,7 +66,7 @@ image::devspaces-git.png[Dev Spaces Git]
 
 ## Testing the Vote Application API in Dev Spaces
 
-### Installing the application dependencies
+### Running the Vote Application API
 
 Let's first set up the dependencies for our application and run the Vote Application locally. From the top left corner, we can select *Terminal* and then *Run Task*. 
 
@@ -100,45 +100,47 @@ After going through the same steps as before, we'll be in the Dev Spaces interfa
 
 image::devspaces-interface-2.png[Dev Spaces Interface]
 
-Stopped working here
+Let's go ahead and install the dependencies to get this project setup. From the upper left-hand menu, select *Terminal* and hit *Run Task*. We can select *Show all tasks* and *devfile: Install dependencies* from here. This will install the necessary Python dependencies, namely `Flask` for web development, and `requests` for making HTTP requests.
 
-Next, we can select *Terminal* and then *Run Task* again. We can select *Show all tasks* and *devfile: Run Python App* from here. This will run the Vote Application in development.
+image::devspaces-run-task-3.png[Dev Spaces Run Task]
 
-image::devspaces-run-app.png[Dev Spaces Run App]
+Next, we can select *Terminal* and then *Run Task* again. We can select *Show all tasks* and *devfile: Run Python App* from here. This will run the Vote Application in development by doing a `python app.py`, as defined in the local `devfile`.
 
-Click on the *Open in New Tab* button to open the Vote Application in a new browser tab. You'll now see a pop-up in the lower right corner about a new process running on port 8080. We can see live code changes to the Vote Application running in the browser using this.
+image::devspaces-run-task-4.png[Dev Spaces Run Task]
+
+Click on the *Open in New Tab* button to open the Vote Application in a new browser tab. You'll now see a pop-up in the lower right corner about a new process running on port 8080. We can see live code changes to the Vote Application running in the browser using this. It may take a few seconds, but you should see the Vote Application running.
+
+TIP: You'll need click the *Yes* button to open the Vote Application in a new browser tab, and possibly change to `http://` instead of `https://` to view the application. This is because of the self-signed certificate used in the development environment.
 
 image::devspaces-run-app-browser.png[Dev Spaces Run App Browser]
 
-From here, we can click the *Yes* button to open the Vote Application in a new browser tab. It may take a few seconds, but you should see the Vote Application running.
+We can now begin to make changes to the Vote Application from the Dev Spaces interface, and for our use case, we want to change a voting option to a unicorn! We can edit the `app.py` and `index.html` file in the to do this.
 
-image::devspaces-run-app-browser-1.png[Dev Spaces Run App Browser]
+### Making changes to our application
 
-We can now begin to make changes to the Vote Application from the Dev Spaces interface. We can edit the `index.html` file in the `templates` directory to do this. 
-
-### Live coding within Dev Spaces
-
-image::devspaces-edit.png[Dev Spaces Edit]
-
-Here, on line 16, we can change the text from `{{option_a}} vs {{option_b}}!` to `{{option_a}} vs {{option_b}}! - OpenShift Dev Spaces`. This will change the title of the Vote Application to *Vote App - OpenShift Dev Spaces*. Feel free to copy the below code and insert it on line 16.
+Let's start out in the `app.py`, on line 11, where can change the text from `option_b = os.getenv('OPTION_B', u"Dog 🐶")` to `option_b = os.getenv('OPTION_B', u"Unicorn 🦄")`. Feel free to copy the below code and insert it on line 11.
 
 [.console-input]
 [source,python,subs="+attributes,macros+"]
 ----
-<h1>{{option_a}} vs {{option_b}}! - OpenShift Dev Spaces</h1>
+option_b = os.getenv('OPTION_B', u"Unicorn 🦄")
 ----
 
 image::devspaces-edit-title.png[Dev Spaces Edit Title]
 
-Now, if we return to our new tab with the local Vote Application running, we can see the new changes we've made updated automatically.
+You'll notice the changes are saved automatically, and you can see the application updating in real-time in the browser with a refresh of your page.
 
-image::devspaces-run-app-browser-2.png[Dev Spaces Run App Browser]
+image::devspaces-run-app-browser-1.png[Dev Spaces Run App Browser]
 
-## Performing a security scan
+Thanks to the variable being used in the `templates/index.html`, the references have been updated to reflect the new changes as well.
 
-Now that we've made changes to the Vote Application, we can secure our application and analyze our dependencies by performing a security scan. Dependency Analytics is powered by the link:https://security.snyk.io/[Snyk Intel Vulnerability DB,window='_blank'], the industry's most advanced and accurate open-source vulnerability database.
+image::devspaces-edit-title-2.png[Dev Spaces Edit Title]
 
-We can right-click the *requirements.txt* file from the left menu to do this. From here, we can select *Dependency Analytics Report* to perform a security scan on the Vote Application.
+### Performing a security scan
+
+Now that we've made changes to the Vote Application frontend, we can secure our application and analyze our dependencies by performing a security scan. Dependency Analytics is powered by the link:https://security.snyk.io/[Snyk Intel Vulnerability DB,window='_blank'], the industry's most advanced and accurate open-source vulnerability database.
+
+We can right-click the *requirements.txt* file from the left menu to do this. From here, we can select *Red Hat Dependency Analytics Report* to perform a security scan on the Vote Application.
 
 image::devspaces-snyk.png[Dev Spaces Snyk]
 
@@ -146,9 +148,9 @@ This will open up a new tab in Dev Spaces with the security scan results. Here, 
 
 image::devspaces-snyk-report.png[Dev Spaces Snyk Report]
 
-## Pushing changes to the Git repository
+### Pushing changes to the Git repository
 
-Now that we've tested our changes, we can push our changes to the Git repository. We can select the *Source Control* tab from the left menu to do this. We can first enter a commit message (ex. `Modified index.html header`), and from here, we can select the dropdown to the right of the ✓ Commit button to *Commit & Push* our changes to the Git repository, 
+Now that we've tested our changes, we can push our changes to the Git repository. We can select the *Source Control* tab from the left menu to do this. We can first enter a commit message (ex. `Modified voting options`), and from here, we can select the dropdown to the right of the ✓ Commit button to *Commit & Push* our changes to the Git repository, 
 
 image::devspaces-commit.png[Dev Spaces Commit]
 
@@ -156,24 +158,41 @@ You'll then see a prompt about staging and committing your changes. We can selec
 
 image::devspaces-commit-2.png[Dev Spaces Commit]
 
-## Syncing changes to the Vote Application
+## Viewing the updated application in development
 
-Now that we've pushed our changes to the Git repository and with the webhook configured, our changes trigger a rebuild of the `vote-ui` application image. To see this in real-time, we can navigate to the OpenShift Web Console and select the `vote-app-ci-%USERID%` project. From here, we can select *Pipelines* from the left menu. We should see the pipeline `vote-app-ui-pipeline` running and rebuilding the Vote Application.
+Now that we've pushed our changes to the Git repository and with the pipelines configured to to the repository, our changes trigger a rebuild of the `vote-ui` application image. We can view this in Developer Hub under the `vote-ui-{user}` component, under the *CI* tab.
 
-image::devspaces-pipeline.png[Dev Spaces Pipeline]
+image::developer-hub-devspaces-pipeline.png[Dev Spaces Pipeline]
 
-Once the pipeline has completed, in the link:https://gitea.%SUBDOMAIN%/%USERID%/vote-app-gitops/[vote-app-gitops,role='params-link',window='_blank'] repository, there will be a new commit from Tekton that will contain the new hash for the Vote Application image. 
+NOTE: We can also navigate to the OpenShift Web Console and select *Pipelines* from the `vote-app-dev-{user}` project, the check out the *PipelineRuns*.
 
-image::devspaces-gitops-commit.png[Dev Spaces GitOps Commit]
-
-Now, Argo CD will automatically pick up on these changes from the repository. To deploy the new image to the `vote-app-dev-%USERID%` project, head back to Argo CD and select the `vote-app-dev-%USERID%` application. You'll see that the application is now out of sync, and hasn't been updated, as we declared in our `Application` resource that we didn't want _self-healing_ enabled. However, to view the new changes from the top menu, click on *Sync*.
+Now, Argo CD will automatically pick up on these changes, and will resync the updated image to the `vote-app-dev-{user}` project. We can view this in the Argo CD interface here shortly.
 
 image::devspaces-argocd-sync.png[Dev Spaces Argo CD Sync]
 
-Now, select *Synchronize*. This will deploy the new image to the `vote-app-dev-%USERID%` project.
+Once the sync is complete, we can view the updated `vote-ui` application in the `vote-app-dev-{user}` project. We can view the application in the OpenShift Web Console *Topology* view, and select the route to view the application in the browser.
 
-image::argocd-sync.png[Argo CD Sync]
+image::devspaces-argocd-sync-2.png[Dev Spaces Argo CD Sync]
+
+We can now see the new _Unicorn_ option in the development environment of the Vote Application. We've successfully made changes to the Vote Application frontend in Dev Spaces, and pushed these changes to the Git repository, but finally need to move our application to the production environment.
+
+image::devspaces-vote-app.png[Dev Spaces Vote Application]
+
+## Promoting our frontend to production
+
+Looks like our application is working as expected in the development environment. Let's promote our changes to the production environment, which can be done from the OpenShift Web Console *Pipelines* dashboard from the left-hand side. Here, we'll select the `vote-ui-promote` pipeline.
+
+image::openshift-web-console-pipelines-prod.png[Developer Hub Pipelines]
+
+Let’s start the pipeline by clicking on the top-right *Actions* then *Start* button to kick things off.
+
+image::openshift-web-console-pipelines-prod-start.png[Developer Hub Pipelines Start]
+
+You will be prompted to enter the values for the pipeline parameters, however the default values are already set for you. This includes the source Git repository and details, as well as the Argo CD host to update the image tag. Hit the *Start* button again to kick off the process.
+
+image::openshift-web-console-pipelines-prod-start-2.png[Developer Hub Pipelines Start]
+
 
 ## Next steps
 
-Making these changes manually is a good solution for our development environment, but let's move this application to production and automate all of this. For this, we can use a separate pipeline to deploy the application to the `vote-app-prod-%USERID%` project.
+In this lab, we've made changes to the Vote Application frontend in Dev Spaces, and pushed these changes to the Git repository. We've also seen how the pipelines are triggered to rebuild the `vote-ui` application image, and how Argo CD automatically syncs these changes to the `vote-app-dev-{user}` project. In the next lab, we'll deploy the Vote Application to the `vote-app-stage-{user}` staging project, and test the application in a production-like environment.
