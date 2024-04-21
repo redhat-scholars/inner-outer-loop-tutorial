@@ -97,33 +97,41 @@ image::argocd-self-heal-sync.png[Argo CD Self-Heal Sync]
 
 ## Scaling the Application using GitOps
 
-To scale the application using the GitOps approach, we need to make changes to the application's configuration in the Git repository.
+To scale the application using the GitOps approach, we need to make changes to the application's configuration in the Git repository via the Helm chart. Let's scale the `vote-api` deployment to five replicas by updating the `values.yaml` file in the `vote-app-gitops` repository. From GitLab, *open* the `helm/app/values.yaml` file.
 
-Navigate to the GitOps repository in GitLab and open the app/templates/vote-api/deployment.yaml file.
+By selecting the *Edit* button, you can modify the spec.replicas field to the desired number of replicas (e.g., 5).
 
-Modify the spec.replicas field to the desired number of replicas (e.g., 5).
+[.console-input]
+[source,bash,subs="+attributes,macros+"]
+----
+replicaCount: 5
+----
 
-[source,yaml]
-spec: replicas: 5
-Commit the changes and create a new merge request targeting the appropriate branch (e.g., main).
+image::gitlab-edit-values.png[GitLab Edit Values]
+
+As you edit the files and commit the changes, create a new merge request targeting a new branch (e.g., `patch-vote-ui-replicas`), and click *Commit changes* when ready.
 
 image::gitlab-merge-request.png[GitLab Merge Request]
 
-Review the merge request and click on Merge to merge the changes into the target branch.
+Now, create and review the merge request (as this is an informative workshop, no need to fill out the details of this merge request). Hit *Create merge request*.
+
+image::gitlab-create-merge-request.png[GitLab Create Merge Request]
+
+Reviewing this merge request, you can see the *Changes* section to view the edit made to the `values.yaml` file. Click on *Merge* to adopt the changes into the target branch.
 
 image::gitlab-merge-changes.png[GitLab Merge Changes]
 
-Once the merge request is merged, Argo CD will automatically detect the changes in the Git repository and trigger a synchronization process.
-
-Navigate to the Argo CD dashboard and observe the synchronization process. Argo CD will update the application's deployment to match the desired state defined in the Git repository.
-
-After the synchronization is complete, the application will be scaled to the specified number of replicas (e.g., 5).
+Once the merge request is merged, Argo CD will automatically detect the changes in the Git repository and trigger a synchronization process. Navigate to the Argo CD dashboard and feel free to observe the synchronization process. Argo CD will update the application's deployment to match the desired state defined in the Git repository. After the synchronization is complete, the application will be scaled to the specified number of replicas (e.g., 5).
 
 image::argocd-scaled.png[Argo CD Scaled]
 
-Congratulations! You have successfully explored the GitOps workflow using Argo CD. You learned how to view the application's state in Argo CD, handle manual changes, synchronize the application, review self-healing configuration, and scale the application using the GitOps approach.
+We can also verify the changes by viewing the `vote-api` deployment in the OpenShift Web Console *Topology* view in the `vote-app-prod-{user}` project. The deployment will now be scaled to five replicas, as defined now in the GitOps repository.
 
-Argo CD ensures that the desired state of your application is always maintained, providing a consistent and reliable deployment process. By leveraging GitOps principles, you can declaratively manage your application's configuration and enjoy the benefits of automated deployments and easy rollbacks.
+image::openshift-scaled-replicas.png[OpenShift Scaled Replicas]
+
+## Next Steps
+
+Congratulations! You have successfully explored the GitOps workflow using Argo CD. You learned how to view the application's state in Argo CD, handle manual changes, synchronize the application, review self-healing configuration, and scale the application using the GitOps approach. By leveraging GitOps principles, you can declaratively manage your application's configuration and enjoy the benefits of automated deployments and easy rollbacks.
 
 
 
