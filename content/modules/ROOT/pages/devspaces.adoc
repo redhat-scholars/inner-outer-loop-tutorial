@@ -6,6 +6,8 @@ With the Vote Application deployed to our `vote-app-dev-{user}` development proj
 
 Let's start by getting more familiar with the Dev Spaces interface, which supports multiple in-browser IDE's such as  Microsoft Visual Studio Code and JetBrains IntelliJ IDEA. Either we can use the OpenShift Web Console application launcher, or more simply, go from the `vote-api` *Developer Hub* component to launch *Dev Spaces* for our specific source code.
 
+NOTE: We'll start with the `vote-api` source code, but we'll also be making changes to the `vote-ui` source code after in Dev Spaces.
+
 image::openshift-dev-spaces-dev-hub.png[OpenShift Dev Spaces Dev Hub]
 
 This will open up the Dev Spaces interface. You'll need to first log in with `rhsso` using your existing credentials and authorize `devspaces` to use your GitLab login.
@@ -70,7 +72,7 @@ Let's first set up the dependencies for our application and run the Vote Applica
 
 image::devspaces-run-task.png[Dev Spaces Run Task]
 
-We can select *Show all tasks* and *devfile: Run API* from here. This will install the necessary dependencies for the Vote Application API and run the application in development.
+We can select *Show all tasks* and *devfile: Run API* from here. This will install the necessary dependencies for the Vote Application API and run the application in development by doing a `go get -d && go run main.go"`, as defined in the local `devfile`.
 
 image::devspaces-run-task-2.png[Dev Spaces Run Task]
 
@@ -80,7 +82,7 @@ image::devspaces-run-task-browser.png[Dev Spaces Run Task Browser]
 
 From the various endpoints shown in the Terminal, we can check out the `/vote` endpoint to see the different options available for the Vote Application.
 
-TIP: You will need to append the beginning of the URL to http instead of https to view the API in the browser.
+TIP: You will need to append the beginning of the URL to http instead of https to view the API in the browser. This is because of the self-signed certificate used in the development environment.
 
 image::devspaces-run-task-browser-1.png[Dev Spaces Run Task Browser]
 
@@ -89,6 +91,16 @@ When returning to the Dev Spaces interface, we can see the Vote Application API 
 image::devspaces-run-task-browser-2.png[Dev Spaces Run Task Browser]
 
 ## Developing the Vote Application UI in Dev Spaces
+
+Let's make some changes to the frontend of our application. Again, just like we did with the `vote-api` application, let's navigate in *Developer Hub* to the `vote-ui` application and launch *Dev Spaces*.
+
+image::openshift-dev-spaces-dev-hub-2.png[OpenShift Dev Spaces Dev Hub]
+
+After going through the same steps as before, we'll be in the Dev Spaces interface for the `vote-ui` application.
+
+image::devspaces-interface-2.png[Dev Spaces Interface]
+
+Stopped working here
 
 Next, we can select *Terminal* and then *Run Task* again. We can select *Show all tasks* and *devfile: Run Python App* from here. This will run the Vote Application in development.
 
