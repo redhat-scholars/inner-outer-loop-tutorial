@@ -138,7 +138,7 @@ image::devspaces-edit-title-2.png[Dev Spaces Edit Title]
 
 ### Performing a security scan
 
-Now that we've made changes to the Vote Application frontend, we can secure our application and analyze our dependencies by performing a security scan. Dependency Analytics is powered by the link:https://security.snyk.io/[Snyk Intel Vulnerability DB,window='_blank'], the industry's most advanced and accurate open-source vulnerability database.
+Now that we've made changes to the Vote Application frontend, we can secure our application and analyze our dependencies by performing a security scan. Dependency Analytics is powered by the link:https://developers.redhat.com/products/trusted-profile-analyzer/overview[Red Hat Trusted Profile Analyzer,window='_blank'], the industry's most advanced and accurate open-source vulnerability database.
 
 We can right-click the *requirements.txt* file from the left menu to do this. From here, we can select *Red Hat Dependency Analytics Report* to perform a security scan on the Vote Application.
 
