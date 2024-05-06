@@ -343,7 +343,7 @@ image::developer-hub-vote-api-topology-prod.png[Developer Hub Vote API Topology]
 
 ## Next Steps
 
-Congratulations! You've successfully deployed the `vote-api` and `vote-ui` to the deployment environment using Tekton Pipelines. Now, let's move on to the next lab to learn how to deploy the application using Argo CD.
+Congratulations! You've successfully deployed the `vote-api` and `vote-ui` to the deployment environment using Tekton Pipelines. Now, let's move on to the next step to learn how to use OpenShift Dev Spaces to make changes to the source code and trigger a new build of the application.
 
 ////
 ## For later (cedric to fix)

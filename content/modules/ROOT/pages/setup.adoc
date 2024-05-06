@@ -28,7 +28,7 @@ image::pipeline-details.png[OpenShift Pipelines]
 
 ### Outer Loop: OpenShift GitOps
 
-link:https://docs.openshift.com/container-platform/4.12/cicd/pipelines/understanding-openshift-pipelines.html[*OpenShift GitOps*,window='_blank'] is a GitOps solution for OpenShift that provides a declarative, GitOps-centric approach to managing applications and their delivery based on link:https://argoproj.github.io/cd/[*Argo CD*,window='_blank']. It provides a set of tools that allow developers to manage the application lifecycle, including deploying, updating, and deleting applications using Git as the source of truth.
+link:https://www.redhat.com/en/technologies/cloud-computing/openshift/gitops[*OpenShift GitOps*,window='_blank'] is a GitOps solution for OpenShift that provides a declarative, GitOps-centric approach to managing applications and their delivery based on link:https://argoproj.github.io/cd/[*Argo CD*,window='_blank']. It provides a set of tools that allow developers to manage the application lifecycle, including deploying, updating, and deleting applications using Git as the source of truth.
 
 // to pull our code from Gitea, build it, and update the Gitea repository with the new image tag. Follow these instructions in order to install OpenShift Pipelines on OpenShift via the OperatorHub:
 

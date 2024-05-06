@@ -22,7 +22,7 @@ image::developer-hub-catalog.png[Developer Hub Catalog]
 
 ### APIs
 
-The APIs page is useful for developers who are building applications that require access to external services or data. We're able to register APIs simply by using YAML that has defined information about where the API is located, what it does, and how to access it, and it can build a link:https://swagger.io/[Swagger API] for it and product that API object.
+The APIs page is useful for developers who are building applications that require access to external services or data. We're able to register APIs simply by using YAML that has defined information about where the API is located, what it does, and how to access it, and view/interact with it using link:https://swagger.io/[Swagger].
 
 image::developer-hub-apis.png[Developer Hub APIs]
 
@@ -49,6 +49,8 @@ image::developer-hub-tech-radar.png[Developer Hub Tech Radar]
 *Docs*: These are the documentation pages that live together with their code, and are written in Markdown. They provide a way to document the project, and provide information about the project to other developers.
 
 *Clusters*: Developer Hub can be used to manage multiple clusters, and provides a way to view the status of the clusters their resources.
+
+NOTE: While we haven't added tech *Docs* on this workshop, each component can have its own documentation that can be viewed from the component's overview page.
 
 ## Kicking off the Software Template Creation
 
@@ -126,6 +128,8 @@ View the component's topology within OpenShift and its relationships with other 
 
 image::developer-hub-vote-api-topology.png[Developer Hub Vote API Topology]
 
+NOTE: These two deployments are currently in Red, as they're waiting for the images to be built and pushed to the internal registry.
+
 ### Issues & Pull/Merge Requests
 
 View and manage Git issues, as well as pull/merge requests, for the source code repository associated with the component.
@@ -134,6 +138,8 @@ View and manage Git issues, as well as pull/merge requests, for the source code 
 View the status and details of the pipelines created and used by the component, as well as the Pipeline's execution and logs.
 
 image::developer-hub-vote-api-ci.png[Developer Hub Vote API CI]
+
+NOTE: For this workshop, we'd like to show manually kicking off the Pipelines using the OpenShift Web Console. Generally, this would be included in the `template.yaml` for the component.
 
 ### CD 
 Check out the deployment status and health for Argo CD applications associated with the component. 

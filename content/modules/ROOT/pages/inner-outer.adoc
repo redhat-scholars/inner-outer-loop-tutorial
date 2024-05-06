@@ -4,7 +4,7 @@ To understand the flow of the lab, let's learn a bit about the inner and outer l
 
 ## Inner Loop vs. Outer Loop
 
-In this lab, we will use these two types of CI/CD pipelines: the inner and outer loop. The inner loop workflow is used to develop and test code locally (ex. using OpenShift Dev Spaces). The outer loop pipeline is used for deploying applications to development and production (ex. using Argo CD).
+In this lab, we will use these two types of CI/CD pipelines: the inner and outer loop. The inner loop workflow is used to develop and test code (ex. using OpenShift Dev Spaces). The outer loop pipeline is used for deploying applications to development and production (ex. using Argo CD).
 
 image::inner-vs-outer-loop.png[Inner vs Outer Loop]
 

@@ -4,7 +4,7 @@ Welcome to the *OpenShift Inner and Outer Loop Development* workshop. We're glad
 
 ## About this lab
 
-This workshop provides you with your own link:https://www.redhat.com/en/technologies/cloud-computing/openshift[*Red Hat OpenShift*,window='_blank'] cluster, and a series of exercises that teach you how to use OpenShift and the following technologies for an inner and outer loop development workflow. You will learn how to use link:https://www.redhat.com/en/technologies/cloud-computing/openshift/pipelines[*OpenShift Pipelines*,window='_blank'] to build and deploy applications to multiple environments (development and production) with CI/CD pipelines, how to use link:https://www.redhat.com/en/technologies/cloud-computing/openshift/gitops[*OpenShift GitOps*,window='_blank'] to handle management and monitoring of applications through a GitOps model. You will also learn how to use link:https://developers.redhat.com/products/openshift-dev-spaces/overview[*OpenShift Dev Spaces*,window='_blank'] to develop and test your application locally, within the web browser. The following diagram shows the architecture of the lab:
+This workshop provides you with your own link:https://www.redhat.com/en/technologies/cloud-computing/openshift[*Red Hat OpenShift*,window='_blank'] cluster, and a series of exercises that teach you how to use OpenShift and the following technologies for an inner and outer loop development workflow. You will learn how to use link:https://www.redhat.com/en/technologies/cloud-computing/openshift/pipelines[*OpenShift Pipelines*,window='_blank'] to build and deploy applications to multiple environments (development and production) with CI/CD pipelines, how to use link:https://www.redhat.com/en/technologies/cloud-computing/openshift/gitops[*OpenShift GitOps*,window='_blank'] to handle management and monitoring of applications through a GitOps model. You will also learn how to use link:https://developers.redhat.com/products/openshift-dev-spaces/overview[*OpenShift Dev Spaces*,window='_blank'] to develop and test your application within the web browser. The following diagram shows the architecture of the lab:
 
 image::inner_outer_diagram.png[Architecture]
 
@@ -18,7 +18,7 @@ image::vote-app.png[Vote App]
 
 By the end of this lab, you will have a better understanding of the inner and outer loop development flow using OpenShift and concepts such as *Internal Developer Platforms* with link:https://backstage.io/[Backstage], *Pipelines* with link:https://tekton.dev/[Tekton], and *GitOps* with link:https://argo-cd.readthedocs.io/[Argo CD]. This workshop includes the following steps:
 
-- Set up an OpenShift cluster and access Red Hat Developer Hub.
+- Use an OpenShift cluster and access Red Hat Developer Hub.
 - Explore the Developer Hub's learning paths, software templates, plugins, and more.
 - Create backend and frontend components using software templates and explore the component plugins from Developer Hub.
 - Build, deploy, and promote components to different environments using pipelines triggered by Git releases.
