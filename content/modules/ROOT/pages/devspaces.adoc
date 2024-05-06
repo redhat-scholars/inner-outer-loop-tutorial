@@ -136,6 +136,10 @@ Thanks to the variable being used in the `templates/index.html`, the references 
 
 image::devspaces-edit-title-2.png[Dev Spaces Edit Title]
 
+Let's also change the `/results` page, where we can see the results of the votes in real-time. Modify the two instances of  `🐶` to `🦄` on line 5 and 28 in the `templates/result/index.html` file.
+
+image::devspaces-edit-title-3.png[Dev Spaces Edit Title]
+
 ### Performing a security scan
 
 Now that we've made changes to the Vote Application frontend, we can secure our application and analyze our dependencies by performing a security scan. Dependency Analytics is powered by the link:https://developers.redhat.com/products/trusted-profile-analyzer/overview[Red Hat Trusted Profile Analyzer,window='_blank'], the industry's most advanced and accurate open-source vulnerability database.
